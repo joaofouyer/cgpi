@@ -1,13 +1,18 @@
 dist: xenial
 language: python
+
 branches:
   only:
     - master
+
 python:
   - "3.6"
+
+services:
+  - xvfb
 
 install:
   - sh .travis/install
 
 script:
-  - python -m pytest tests/
+  - xvfb-run --server-args="-screen 0 1024x768x24" python -m pytest tests/
