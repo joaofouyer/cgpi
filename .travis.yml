@@ -14,5 +14,8 @@ services:
 install:
   - sh .travis/install
 
+before_install:
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
+
 script:
-  - xvfb-run --server-args="-screen 0 1024x768x24" python -m pytest tests/
+  - python -m pytest tests/
