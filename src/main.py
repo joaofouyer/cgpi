@@ -1,7 +1,7 @@
-from src.window import Window
-from src.primitives.coordinate import Coordinate
-from src.primitives.point import Point
-from src.primitives.line import Line
+from window import Window
+from primitives.coordinate import Coordinate
+from primitives.point import Point
+from primitives.line import Line
 
 
 class App:

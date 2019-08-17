@@ -10,7 +10,6 @@ class Window():
         self.root = Tk()
         self.root.title(self.title)
         self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
-        self.canvas.pack()
 
     def open(self):
         try:

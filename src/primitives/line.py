@@ -1,6 +1,6 @@
-from src.primitives.point import Point
-from src.primitives.coordinate import Coordinate
-from src.animation import Animation
+from primitives.point import Point
+from primitives.coordinate import Coordinate
+from animation import Animation
 
 class Line:
     def __init__(self, p1, p2, color, thickness):
