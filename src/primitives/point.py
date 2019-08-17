@@ -1,4 +1,4 @@
-from primitives.coordinate import Coordinate
+from src.primitives.coordinate import Coordinate
 
 
 class Point():
