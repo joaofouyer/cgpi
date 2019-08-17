@@ -2,5 +2,4 @@
 
 set -e
 set -u
-
-sudo apt-get install python3-tk;
+sudo apt-get update && sudo apt-get install python3-tk;
