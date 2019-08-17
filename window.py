@@ -7,9 +7,9 @@ class Window():
         self.width = width
         self.height = height
         self.background = background
-        master = Tk()
-        master.title(self.title)
-        self.canvas = Canvas(master, width=self.width, height=self.height, bg=self.background)
+        self.root = Tk()
+        self.root.title(self.title)
+        self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
         self.canvas.pack()
 
     def open(self):

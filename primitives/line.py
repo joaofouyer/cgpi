@@ -1,6 +1,6 @@
 from primitives.point import Point
 from primitives.coordinate import Coordinate
-
+from animation import Animation
 
 class Line:
     def __init__(self, p1, p2, color, thickness):
@@ -13,6 +13,8 @@ class Line:
 
     def calc_slope(self):
         try:
+            if self.p1.x == self.p2.x:
+                return 0
             return (self.p2.y - self.p1.y) / (self.p2.x - self.p1.x)
 
         except Exception as e:
@@ -66,8 +68,9 @@ class Line:
             print("Exception on set_properties: ", e)
             return True
 
-    def iterate_over_y_axis(self, window):
+    def iterate_over_y_axis(self, window, animation=False):
         try:
+            animation = Animation(window=window, speed=5) if animation else None
             if self.p1.y > self.p2.y:
                 pivot, greater = self.p2, self.p1
             else:
@@ -78,17 +81,21 @@ class Line:
                 self.set_properties(window=window, point=greater)
                 for y in range(pivot.y, greater.y):
                     c = Coordinate(x=x, y=y)
-                    Point(window=window, coordinate=c, size=self.thickness, color=self.color).draw()
+                    p = Point(window=window, coordinate=c, size=self.thickness, color=self.color)
+                    animation.append_frame(frame=p) if animation else p.draw()
             else:
                 self.set_properties(window=window, point=pivot)
                 for y in range(pivot.y, greater.y):
                     c = Coordinate(x=self.x_linear_equation(y=y), y=y)
-                    Point(window=window, coordinate=c, size=self.thickness, color=self.color).draw()
+                    p = Point(window=window, coordinate=c, size=self.thickness, color=self.color)
+                    animation.append_frame(frame=p) if animation else p.draw()
+            animation.animate()
+            return False
         except Exception as e:
             print("Exception on iterate over y axis: ", e)
             return True
 
-    def iterate_over_x_axis(self, window):
+    def iterate_over_x_axis(self, window, animation=False):
         try:
             if self.p1.x > self.p2.x:
                 pivot, greater = self.p2, self.p1
@@ -104,9 +111,12 @@ class Line:
             print("Exception on iterate_over_x_axis: ", e)
             return True
 
-    def draw(self, w):
+    def draw(self, w, animation=False):
         try:
-            self.iterate_over_y_axis(w) if self.delta_y_axis() > self.delta_x_axis() else self.iterate_over_x_axis(w)
+            if self.delta_y_axis() > self.delta_x_axis():
+                self.iterate_over_y_axis(w, animation=animation)
+            else:
+                self.iterate_over_x_axis(w, animation=animation)
 
         except Exception as e:
             print("Exception on line.draw(): ", e)

@@ -1,15 +1,16 @@
 class Animation:
-    def __init__(self, window):
+    def __init__(self, window, speed=10):
         self.frame = []
         self.window = window
+        self.speed = speed
 
-    def animate(self, speed=10):
+    def animate(self):
         try:
             if (len(self.frame)):
                 f = self.frame.pop(0)
                 f.window = self.window
                 f.draw()
-                self.window.canvas.after(speed, self.animate)
+                self.window.canvas.after(self.speed, self.animate)
         except Exception as e:
             print(e)
 
