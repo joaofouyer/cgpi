@@ -1,14 +1,14 @@
 from primitives.coordinate import Coordinate
-from window import Window
+
 
 class Point():
-    def __init__(self, window=None, coordinate=Coordinate(), color="#000000"):
+    def __init__(self, window=None, coordinate=Coordinate(), size=2, color="#000000"):
         try:
             x, y = coordinate.get_coordinate()
             self.window = window
             self.x = x
             self.y = y
-            self.size = 2
+            self.size = size
             self.color = color
 
         except Exception as e:

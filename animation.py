@@ -6,8 +6,9 @@ class Animation:
     def animate(self, speed=10):
         try:
             if (len(self.frame)):
-                self.frame[0].draw()
-                self.frame.pop(0)
+                f = self.frame.pop(0)
+                f.window = self.window
+                f.draw()
                 self.window.canvas.after(speed, self.animate)
         except Exception as e:
             print(e)
