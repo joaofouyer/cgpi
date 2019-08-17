@@ -89,7 +89,7 @@ class Line:
                     c = Coordinate(x=self.x_linear_equation(y=y), y=y)
                     p = Point(window=window, coordinate=c, size=self.thickness, color=self.color)
                     animation.append_frame(frame=p) if animation else p.draw()
-            animation.animate()
+            animation.animate() if animation else False
             return False
         except Exception as e:
             print("Exception on iterate over y axis: ", e)
@@ -97,6 +97,7 @@ class Line:
 
     def iterate_over_x_axis(self, window, animation=False):
         try:
+            animation = Animation(window=window, speed=5) if animation else None
             if self.p1.x > self.p2.x:
                 pivot, greater = self.p2, self.p1
             else:
@@ -105,7 +106,9 @@ class Line:
             self.set_properties(window=window, point=pivot)
             for x in range(pivot.x, greater.x):
                 c = Coordinate(x=x, y=self.y_linear_equation(x=x))
-                Point(window=window, coordinate=c, size=self.thickness, color=self.color).draw()
+                p = Point(window=window, coordinate=c, size=self.thickness, color=self.color)
+                animation.append_frame(frame=p) if animation else p.draw()
+            animation.animate() if animation else False
             return False
         except Exception as e:
             print("Exception on iterate_over_x_axis: ", e)
