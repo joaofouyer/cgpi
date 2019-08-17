@@ -1,7 +1,0 @@
-class Coordinates:
-	def __init__(self, x=0, y=0):
-		self.x = x
-		self.y = y
-
-	def get_coordinates(self):
-		return self.x, self.y
