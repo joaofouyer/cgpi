@@ -1,4 +1,4 @@
-from src.primitives.coordinate import Coordinate
+from primitives.coordinate import Coordinate
 
 
 def test_coordinate():

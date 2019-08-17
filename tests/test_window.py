@@ -1,4 +1,4 @@
-from src.window import Window
+from window import Window
 
 
 def test_window():
