@@ -2,6 +2,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+[![Build Status](https://travis-ci.org/joaofouyer/computer-graphics-python.svg?branch=master)](https://travis-ci.org/joaofouyer/computer-graphics-python)
+
 Código-fonte com exemplos em Python das aulas de Computação Gráfica. 
 
 ## Licença
