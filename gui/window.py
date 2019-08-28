@@ -1,9 +1,15 @@
 # coding: utf-8
+import sys
+# Importante para garantir que funcione em python2 e em python3.
 
-from tkinter import Tk, Canvas, mainloop
-
+if sys.version_info[0] < 3:
+    from Tkinter import Tk, Canvas, mainloop
+else:
+    from tkinter import Tk, Canvas, mainloop
 
 class Window:
+
+
     def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff"):
         self.title = title
         self.width = width

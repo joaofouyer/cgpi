@@ -1,14 +1,18 @@
 # coding: utf-8
-
+import sys
 from primitives.coordinate import Coordinate
 from primitives.point import Point
 from primitives.line import Line
 from gui.animation import Animation
 
 
-class LineGraph (Line):
+class LineGraph (Line, object):
     def __init__(self, p1, p2, color, thickness):
-        super().__init__(p1, p2)
+        if sys.version_info[0] < 3:
+            super(LineGraph, self).__init__(p1, p2)
+        else:
+            super().__init__(p1, p2)
+
         self.color = color
         self.thickness = thickness
 
