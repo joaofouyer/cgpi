@@ -1,3 +1,4 @@
+# coding: utf-8
 from primitives.coordinate import Coordinate
 
 

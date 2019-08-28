@@ -1,19 +1,21 @@
-from window import Window
+# coding: utf-8
+
+from gui.window import Window
 from primitives.coordinate import Coordinate
 from primitives.point import Point
-from primitives.line import Line
+from primitives.line_graph import LineGraph
 
 
 class App:
     @staticmethod
     def main():
         try:
-            w = Window(title="Testando Pontos Animados", width=640, height=480, background="#000000")
-            coordinate_p1 = Coordinate(x=50, y=300)
+            w = Window(title="Testando Pontos Animados", width=640, height=480, background="white")
+            coordinate_p1 = Coordinate(x=50, y=500)
             p1 = Point(window=w, coordinate=coordinate_p1)
-            coordinate_p2 = Coordinate(x=450, y=300)
+            coordinate_p2 = Coordinate(x=480, y=67)
             p2 = Point(window=w, coordinate=coordinate_p2)
-            line = Line(p1=p1, p2=p2, color="#ffffff", thickness=2)
+            line = LineGraph(p1=p1, p2=p2, color="blue", thickness=2)
             line.draw(w=w, animation=False)
             w.mainloop()
             return False

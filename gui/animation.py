@@ -1,3 +1,6 @@
+# coding: utf-8
+
+
 class Animation:
     def __init__(self, window, speed=10):
         self.frame = []
@@ -6,7 +9,7 @@ class Animation:
 
     def animate(self):
         try:
-            if (len(self.frame)):
+            if len(self.frame):
                 f = self.frame.pop(0)
                 f.window = self.window
                 f.draw()

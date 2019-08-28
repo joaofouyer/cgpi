@@ -1,7 +1,8 @@
+# coding: utf-8
 from primitives.coordinate import Coordinate
 
 
-class Point():
+class Point:
     def __init__(self, window=None, coordinate=Coordinate(), size=2, color="#000000"):
         try:
             x, y = coordinate.get_coordinate()
@@ -16,7 +17,7 @@ class Point():
 
     def draw(self):
         try:
-            self.window.canvas.create_rectangle( (self.x, self.y) * self.size, fill=self.color, outline=self.color)
+            self.window.canvas.create_rectangle((self.x, self.y) * self.size, fill=self.color, outline=self.color)
             return False
         except Exception as e:
             print("Exception in Point.draw(): ", e)

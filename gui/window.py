@@ -1,7 +1,9 @@
+# coding: utf-8
+
 from tkinter import Tk, Canvas, mainloop
 
 
-class Window():
+class Window:
     def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff"):
         self.title = title
         self.width = width
