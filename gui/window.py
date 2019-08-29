@@ -9,7 +9,6 @@ else:
 
 class Window:
 
-
     def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff"):
         self.title = title
         self.width = width
