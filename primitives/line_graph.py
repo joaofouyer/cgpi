@@ -1,7 +1,7 @@
 # coding: utf-8
 import sys
 from primitives.coordinate import Coordinate
-from primitives.point import Point
+from primitives.point_graph import PointGraph
 from primitives.line import Line
 from gui.animation import Animation
 
@@ -50,13 +50,13 @@ class LineGraph (Line, object):
                 self.set_properties(window=window, point=greater)
                 for y in range(pivot.y, greater.y):
                     c = Coordinate(x=x, y=y)
-                    p = Point(window=window, coordinate=c, size=self.thickness, color=self.color)
+                    p = PointGraph(window=window, coordinate=c, size=self.thickness, color=self.color)
                     animation.append_frame(frame=p) if animation else p.draw()
             else:
                 self.set_properties(window=window, point=pivot)
                 for y in range(pivot.y, greater.y):
                     c = Coordinate(x=self.x_linear_equation(y=y), y=y)
-                    p = Point(window=window, coordinate=c, size=self.thickness, color=self.color)
+                    p = PointGraph(window=window, coordinate=c, size=self.thickness, color=self.color)
                     animation.append_frame(frame=p) if animation else p.draw()
             animation.animate() if animation else False
             return False
@@ -75,7 +75,7 @@ class LineGraph (Line, object):
             self.set_properties(window=window, point=pivot)
             for x in range(pivot.x, greater.x):
                 c = Coordinate(x=x, y=self.y_linear_equation(x=x))
-                p = Point(window=window, coordinate=c, size=self.thickness, color=self.color)
+                p = PointGraph(window=window, coordinate=c, size=self.thickness, color=self.color)
                 animation.append_frame(frame=p) if animation else p.draw()
             animation.animate() if animation else False
             return False

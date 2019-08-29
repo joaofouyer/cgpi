@@ -3,33 +3,32 @@ from primitives.coordinate import Coordinate
 
 
 class Point:
-    def __init__(self, window=None, coordinate=Coordinate(), size=2, color="#000000"):
+    def __init__(self, coordinate=Coordinate()):
         try:
             x, y = coordinate.get_coordinate()
-            self.window = window
             self.x = x
             self.y = y
-            self.size = size
-            self.color = color
 
         except Exception as e:
             print("Exception in Point's init: ", e)
 
-    def draw(self):
+    @staticmethod
+    def find_p2(origin, length, angle):
         try:
-            self.window.canvas.create_rectangle((self.x, self.y) * self.size, fill=self.color, outline=self.color)
-            return False
-        except Exception as e:
-            print("Exception in Point.draw(): ", e)
-            return True
+            from math import cos, sin, radians
+            """"
+            Given an origin, length and an angle, this method finds the destination point!
+            :param origin: an origin point. Must be point type.
+            :param length: the length of the line, in pixels (integer)
+            :param angle: the angle from the origin from 0 to 360 degrees
+            :return: p2c
+            """
+            x = round(origin.x + cos(radians(angle))*length)
+            y = round(origin.y + sin(radians(angle))*length)
+            coordinate = Coordinate(x=x, y=y)
+            p2 = Point(coordinate=coordinate)
+            return p2
 
-    def valid_coordinate(self):
-        try:
-            if self.x < 0 or self.window.width < self.x:
-                #    Adicionar tratamento quando o valor de x for inválido.
-                return True
-            if self.y < 0 or self.window.height < self.y:
-                #    Adicionar tratamento quando o valor de y for inválido.
-                return True
         except Exception as e:
-            print("Exception in Point. ", e)
+            print("Exception on find_p2: ", e)
+            return False
