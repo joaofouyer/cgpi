@@ -1,9 +1,11 @@
 # coding: utf-8
 
 from gui.window import Window
+from primitives import circle
 from primitives.coordinate import Coordinate
 from primitives.point import Point
 from primitives.line_graph import LineGraph
+from primitives.circle import Circle
 
 
 class App:
@@ -17,6 +19,7 @@ class App:
             p2 = Point(window=w, coordinate=coordinate_p2)
             line = LineGraph(p1=p1, p2=p2, color="blue", thickness=2)
             line.draw(w=w, animation=False)
+            circle.Circle(w,50,200, 20)
             w.mainloop()
             return False
 
