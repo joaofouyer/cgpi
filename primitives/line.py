@@ -1,5 +1,4 @@
 # coding: utf-8
-from primitives.point import Point
 
 
 class Line:
@@ -10,9 +9,9 @@ class Line:
             raise Exception("You must specify an origin point to draw a line!")
         if p2:
             self.p2 = p2
-        elif length and angle:
+        elif length is not None and angle is not None:
             print(length, angle)
-            self.p2 = Point.find_p2(origin=self.p1, length=length, angle=angle)
+            self.p2 = p1.find_p2(length=length, angle=angle)
         else:
             raise Exception("To draw a line, you must specify p2 or its both length and angle from p1!")
         self.m = self.calc_slope()

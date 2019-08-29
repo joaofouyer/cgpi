@@ -7,12 +7,12 @@ from gui.animation import Animation
 
 
 class LineGraph (Line, object):
-    def __init__(self, p1, p2, color, thickness):
+    def __init__(self, p1, p2=None, length=None, angle=None, color="#000000", thickness=2):
+        print(length, angle)
         if sys.version_info[0] < 3:
-            super(LineGraph, self).__init__(p1, p2)
+            super(LineGraph, self).__init__(p1, p2, length, angle)
         else:
-            super().__init__(p1, p2)
-
+            super().__init__(p1, p2, length, angle)
         self.color = color
         self.thickness = thickness
 
@@ -23,6 +23,7 @@ class LineGraph (Line, object):
             p.size = self.thickness
             p.window = window
             p.draw()
+            return False
         except Exception as e:
             print("Exception on set_properties: ", e)
             return True
@@ -33,9 +34,10 @@ class LineGraph (Line, object):
                 self.iterate_over_y_axis(w, animation=animation)
             else:
                 self.iterate_over_x_axis(w, animation=animation)
-
+            return False
         except Exception as e:
             print("Exception on line.draw(): ", e)
+            return True
 
     def iterate_over_y_axis(self, window, animation=False):
         try:

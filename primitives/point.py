@@ -13,6 +13,9 @@ class Point:
         except Exception as e:
             print("Exception in Point's init: ", e)
 
+    def get_coordinates(self):
+        return self.x, self.y
+
     def find_p2(self, length, angle):
         try:
             from math import cos, sin, radians
