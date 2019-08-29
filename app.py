@@ -10,12 +10,38 @@ class App:
     @staticmethod
     def main():
         try:
-            w = Window(title="Testando Pontos Animados", width=640, height=480, background="white")
-            coordinate_p1 = Coordinate(x=50, y=50)
+            w = Window(title="Testando Pontos Animados", width=600, height=600, background="white")
+            coordinate_p1 = Coordinate(x=300, y=300)
             p1 = PointGraph(coordinate=coordinate_p1, window=w)
-            p2 = PointGraph.find_p2(origin=p1, length=500, angle=60)
-            line = LineGraph(p1=p1, p2=p2, color="blue", thickness=2)
-            line.draw(w=w, animation=False)
+            coordinate_p2 = p1.find_p2(length=200, angle=0).coordinate
+            p2 = PointGraph(coordinate=coordinate_p2, window=w)
+            line0 = LineGraph(p1=p1, p2=p2, color="black", thickness=2)
+            line0.draw(w=w, animation=False)
+
+            coordinate_p2 = p1.find_p2(length=200, angle=180).coordinate
+            p2 = PointGraph(coordinate=coordinate_p2, window=w)
+            line180 = LineGraph(p1=p1, p2=p2, color="blue", thickness=2)
+            line180.draw(w=w, animation=False)
+
+            coordinate_p2 = p1.find_p2(length=200, angle=90).coordinate
+            p2 = PointGraph(coordinate=coordinate_p2, window=w)
+            line90 = LineGraph(p1=p1, p2=p2, color="red", thickness=2)
+            line90.draw(w=w, animation=False)
+
+            coordinate_p2 = p1.find_p2(length=200, angle=270).coordinate
+            p2 = PointGraph(coordinate=coordinate_p2, window=w)
+            line270 = LineGraph(p1=p1, p2=p2, color="yellow", thickness=2)
+            line270.draw(w=w, animation=False)
+
+            coordinate_p2 = p1.find_p2(length=200, angle=45).coordinate
+            p2 = PointGraph(coordinate=coordinate_p2, window=w)
+            line45 = LineGraph(p1=p1, p2=p2, color="purple", thickness=2)
+            line45.draw(w=w, animation=False)
+
+            coordinate_p2 = p1.find_p2(length=200, angle=135).coordinate
+            p2 = PointGraph(coordinate=coordinate_p2, window=w)
+            line135 = LineGraph(p1=p1, p2=p2, color="green", thickness=2)
+            line135.draw(w=w, animation=False)
 
             w.mainloop()
             return False
