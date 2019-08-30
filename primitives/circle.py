@@ -1,7 +1,6 @@
-
+# coding: utf-8
 from math import cos, sin
 from primitives.point import Point
-from primitives.coordinate import Coordinate
 
 
 class Circle:
@@ -14,7 +13,7 @@ class Circle:
             print("Circle init: ", e)
 
     def build_circle_x(self, angle):
-            return self.center.x + self.radius * cos(angle)
+        return self.center.x + self.radius * cos(angle)
 
     def build_circle_y(self, angle):
-            return self.center.y + self.radius * sin(angle)
+        return self.center.y + self.radius * sin(angle)

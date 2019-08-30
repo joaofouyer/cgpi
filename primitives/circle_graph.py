@@ -1,6 +1,6 @@
 # coding: utf-8
 from primitives.circle import Circle
-from primitives.point import Point
+from primitives.point_graph import PointGraph
 from primitives.coordinate import Coordinate
 import sys
 
@@ -30,18 +30,15 @@ class CircleGraph(Circle, object):
             print("Exception on set_properties: ", e)
             return True   
     
-    def drawCircle(self, window):
+    def draw_circle(self, window):
         cc = Circle(center=self.center, radius=self.radius)
         try:
             for angle in range(0, 360):
                 xc = round(cc.build_circle_x(angle))
                 yc = round(cc.build_circle_y(angle))
                 coordinate_cc = Coordinate(x=xc, y=yc)
-                pt = Point(window=window, coordinate=coordinate_cc, size=self.thickness, color=self.color)
+                pt = PointGraph(window=window, coordinate=coordinate_cc, size=self.thickness, color=self.color)
                 pt.draw()
         except Exception as e:
-            print("hiriririr", e)
+            print("Exception on draw_circle: ", e)
             return True
-
-
-        
