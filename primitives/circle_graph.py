@@ -6,7 +6,7 @@ import sys
 
 
 class CircleGraph(Circle, object):
-    def __init__(self, center, radius, color="#000000", thickness=2):
+    def __init__(self, center, radius, color="#000000", thickness=1):
         try:
             if sys.version_info[0] < 3:
                 super(CircleGraph, self).__init__(center, radius)
@@ -33,7 +33,7 @@ class CircleGraph(Circle, object):
     def draw_circle(self, window):
         cc = Circle(center=self.center, radius=self.radius)
         try:
-            for angle in range(0, 360):
+            for angle in range(0, 3600):
                 xc = round(cc.build_circle_x(angle))
                 yc = round(cc.build_circle_y(angle))
                 coordinate_cc = Coordinate(x=xc, y=yc)

@@ -7,7 +7,7 @@ from gui.animation import Animation
 
 
 class LineGraph (Line, object):
-    def __init__(self, p1, p2=None, length=None, angle=None, color="#000000", thickness=2):
+    def __init__(self, p1, p2=None, length=None, angle=None, color="#000000", thickness=1):
         if sys.version_info[0] < 3:
             super(LineGraph, self).__init__(p1, p2, length, angle)
         else:

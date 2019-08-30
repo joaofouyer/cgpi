@@ -5,7 +5,7 @@ from primitives.coordinate import Coordinate
 
 
 class PointGraph (Point, object):
-    def __init__(self, coordinate=Coordinate(), window=None, size=2, color="#000000"):
+    def __init__(self, coordinate=Coordinate(), window=None, size=1, color="#000000"):
         if sys.version_info[0] < 3:
             super(PointGraph, self).__init__(coordinate)
         else:
@@ -16,7 +16,7 @@ class PointGraph (Point, object):
 
     def draw(self):
         try:
-            self.window.canvas.create_rectangle((self.x, self.y) * self.size, fill=self.color, outline=self.color)
+            self.window.canvas.create_oval(self.x-self.size, self.y-self.size, self.x + self.size, self.y + self.size, fill=self.color, outline=self.color)
             return False
         except Exception as e:
             print("Exception in Point.draw(): ", e)
