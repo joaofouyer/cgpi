@@ -40,7 +40,7 @@ class LineGraph (Line, object):
 
     def iterate_over_y_axis(self, window, animation=False):
         try:
-            animation = Animation(window=window, speed=5) if animation else None
+            animation = Animation(window=window, speed=1) if animation else None
             if self.p1.y > self.p2.y:
                 pivot, greater = self.p2, self.p1
             else:
@@ -67,7 +67,7 @@ class LineGraph (Line, object):
 
     def iterate_over_x_axis(self, window, animation=False):
         try:
-            animation = Animation(window=window, speed=5) if animation else None
+            animation = Animation(window=window, speed=1) if animation else None
             if self.p1.x > self.p2.x:
                 pivot, greater = self.p2, self.p1
             else:
