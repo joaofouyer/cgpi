@@ -21,16 +21,18 @@ class DragonCurve:
         try:
             if order:
                 line = LineGraph(p1=p1, length=length, angle=angle)
-                angle = angle-90 % 360
-                self.dragon_curve_recursive(order=order - 1, length=length, angle=angle, p1=line.p2)
-                angle = angle - 90 % 360
-                self.dragon_curve_recursive(order=order - 1, length=length, angle=angle*90, p1=line.p2)
+                p1 = line.p2
+                p1 = self.dragon_curve_recursive(order=order - 1, length=length, angle=angle, p1=p1)
+                angle = (angle - 90) % 360
+                p1 = self.dragon_curve_recursive(order=order - 1, length=length, angle=angle, p1=p1)
+                return p1
             else:
-                print(angle, length, p1.x, p1.y)
+                print("ang: ", angle, "origin: ", p1.x, p1.y)
                 line = LineGraph(p1=p1, length=length, angle=angle)
                 line.draw(w=self.window, animation=True)
+                return line.p2
         except Exception as e:
             print("Exception on dragon_curve_recursive: ", e)
 
 
-d = DragonCurve().dragon_curve(order=2, length=100)
+d = DragonCurve().dragon_curve(order=3, length=100)
