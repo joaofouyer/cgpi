@@ -1,5 +1,5 @@
 # coding: utf-8
-from primitives.circle import Circle
+from primitives.circle import Circle as cc
 from primitives.point import Point
 
 class CircleGraph (Circle, object):
@@ -25,6 +25,7 @@ class CircleGraph (Circle, object):
     
     def drawCircle(self,window):
         try:
+            
             for angle in range(0,360):
                 xc = cc.build_circle_x(angle)
                 yc = cc.build_circle_y(angle)

@@ -12,7 +12,7 @@ from primitives.circle_graph import CircleGraph
 class App:
     
     @staticmethod
-    def menhe():
+    def main():
         try:
             w = Window(title="Testando Pontos Animados", width=640, height=480, background="white")
             coordinate_p1 = Coordinate(x=100, y=100)
@@ -29,4 +29,4 @@ class App:
     
 
 app = App()
-app.menhe()
+app.main()
