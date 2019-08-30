@@ -22,7 +22,8 @@ class CircleGraph (Circle, object):
         except Exception as e:
             print("Exception on set_properties: ", e)
             return True   
-    def drawCircle(self, window):
+    
+    def drawCircle(self,window):
         try:
             for angle in range(0,360):
                 xc = cc.build_circle_x(angle)
