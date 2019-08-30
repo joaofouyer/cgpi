@@ -10,7 +10,6 @@ class Line:
         if p2:
             self.p2 = p2
         elif length is not None and angle is not None:
-            print(length, angle)
             self.p2 = p1.find_p2(length=length, angle=angle)
         else:
             raise Exception("To draw a line, you must specify p2 or its both length and angle from p1!")

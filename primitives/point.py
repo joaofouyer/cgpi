@@ -19,6 +19,7 @@ class Point:
     def find_p2(self, length, angle):
         try:
             from math import cos, sin, radians
+            from primitives.point_graph import PointGraph
             """"
             Given an origin, length and an angle, this method finds the destination point!
             :param origin: an origin point. Must be point type.
@@ -29,7 +30,7 @@ class Point:
             x = round(self.x + cos(radians(angle))*length)
             y = round(self.y + sin(radians(angle*-1))*length)
             coordinate = Coordinate(x=x, y=y)
-            p2 = Point(coordinate=coordinate)
+            p2 = PointGraph(coordinate=coordinate)
             return p2
 
         except Exception as e:
