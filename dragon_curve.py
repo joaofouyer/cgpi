@@ -24,10 +24,11 @@ class DragonCurve:
                 p1 = line.p2
                 p1 = self.dragon_curve_recursive(order=order - 1, length=length, angle=angle, p1=p1)
                 angle = (angle - 90) % 360
-                p1 = self.dragon_curve_recursive(order=order - 1, length=length, angle=angle, p1=p1)
+                p12 = self.dragon_curve_recursive(order=order - 1, length=length, angle=angle, p1=p1)
                 return p1
             else:
                 print("ang: ", angle, "origin: ", p1.x, p1.y)
+                angle = (angle - 90) % 360
                 line = LineGraph(p1=p1, length=length, angle=angle)
                 line.draw(w=self.window, animation=True)
                 return line.p2
