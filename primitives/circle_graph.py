@@ -1,17 +1,24 @@
 # coding: utf-8
-from primitives.circle import Circle as cc
+from primitives.circle import Circle
 from primitives.point import Point
+from primitives.coordinate import Coordinate
+import sys
 
-class CircleGraph (Circle, object):
-    def _init_(self, center, radius, color,  thickness):
-        if sys.version_info[0] < 3:
-            super(CircleGraph, self).__init__(center, radius)
-        else:
-            super().__init__(center, radius)   
+
+class CircleGraph(Circle, object):
+    def __init__(self, center, radius, color="#000000", thickness=2):
+        try:
+            if sys.version_info[0] < 3:
+                super(CircleGraph, self).__init__(center, radius)
+            else:
+                super().__init__(center, radius)
+            self.center = center
+            self.radius = radius
+            self.color = color 
+            self.thickness = thickness
+        except Exception as e:
+            print("CircleGraph: ", e)
         
-        self.color = color
-        self.thickness = thickness
-
     def set_properties(self, window, point):
         try:
             p = point
@@ -23,14 +30,14 @@ class CircleGraph (Circle, object):
             print("Exception on set_properties: ", e)
             return True   
     
-    def drawCircle(self,window):
+    def drawCircle(self, window):
+        cc = Circle(center=self.center, radius=self.radius)
         try:
-            
-            for angle in range(0,360):
-                xc = cc.build_circle_x(angle)
-                yc = cc.build_circle_y(angle)
+            for angle in range(0, 360):
+                xc = round(cc.build_circle_x(angle))
+                yc = round(cc.build_circle_y(angle))
                 coordinate_cc = Coordinate(x=xc, y=yc)
-                pt = point.Point(window, coordinate_cc, size=self.thickness, color=self.color)
+                pt = Point(window=window, coordinate=coordinate_cc, size=self.thickness, color=self.color)
                 pt.draw()
         except Exception as e:
             print("hiriririr", e)

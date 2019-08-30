@@ -9,24 +9,19 @@ from primitives.circle import Circle
 from primitives.circle_graph import CircleGraph
 
 
-class App:
-    
-    @staticmethod
-    def main():
-        try:
-            w = Window(title="Testando Pontos Animados", width=640, height=480, background="white")
-            coordinate_p1 = Coordinate(x=100, y=100)
-            p1 = Point(window=w, coordinate=coordinate_p1)
-            cc = CircleGraph(coordinate_p1, 250, "#000000", 2)
-            cc.drawCircle(w)
-            w.mainloop()
-            return False
 
-        except Exception as e:
-            print("Exception on main(): ", e)
-            return True
-    
-    
+def main():
+    try:
+        w = Window(title="Testando Pontos Animados", width=640, height=480, background="white")
+        coordinate_p1 = Coordinate(x=100, y=100)
+        p1 = Point(window=w, coordinate=coordinate_p1)
+        cc = CircleGraph(center=Coordinate(x=50, y=50), radius=50, color="#000000", thickness=2)
+        cc.drawCircle(window=w)
+        w.mainloop()
+        return False
 
-app = App()
-app.main()
+    except Exception as e:
+        print("Exception on main(): ", e)
+        return True
+    
+main()

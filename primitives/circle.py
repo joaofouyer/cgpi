@@ -1,28 +1,20 @@
 
-import cmath
+from math import cos, sin
+from primitives.point import Point
+from primitives.coordinate import Coordinate
+
+
 class Circle:
 
-    def __init__(self, window, x, y, radius):
-        self.window = window
-        self.x = x
-        self.radius = radius
-        self.y = y
+    def __init__(self, center, radius):
+        try:
+            self.center = Point(coordinate=center)
+            self.radius = radius
+        except Exception as e:
+            print("Circle init: ", e)
 
-    def build_circle_x(self):
-           
-            x1 = self.x + self.radius * cmath.cos(angle)
-            
-    def build_circle_y(self):
-           
-            y1 = self.y + self.radius * cmath.sin(angle)
-            
+    def build_circle_x(self, angle):
+            return self.center.x + self.radius * cos(angle)
 
-
-
-
-
-
-
-
-
-
+    def build_circle_y(self, angle):
+            return self.center.y + self.radius * sin(angle)
