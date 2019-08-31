@@ -6,34 +6,26 @@ from gui.window import Window
 
 class DragonCurve:
     window = Window(title="Curva do Dragão", width=1000, height=1000, background="#FFFFFF")
+    origin = PointGraph(coordinate=Coordinate(x=150, y=150))
 
-    def dragon_curve(self, order, length):
+    def dragon_curve(self, order, length, angle):
         try:
-            p1 = PointGraph(coordinate=Coordinate(x=50, y=50))
-            self.dragon_curve_recursive(order=order, length=length, angle=0, p1=p1)
-            self.window.mainloop()
+            if order:
+                angle = (angle + 45) % 360
+                self.dragon_curve(order=order-1, length=length, angle=angle)
+                angle = (angle - 45) % 360
+                self.dragon_curve(order=order-1, length=length, angle=angle)
+                angle = (angle + 45) % 360
+            else:
+                line = LineGraph(p1=self.origin, length=length, angle=angle)
+                line.draw(w=self.window, animation=True)
+                self.origin = line.p2
+
             return False
         except Exception as e:
             print("Exception on dragon_curve: ", e)
             return True
 
-    def dragon_curve_recursive(self, order, length, angle, p1):
-        try:
-            if order:
-                line = LineGraph(p1=p1, length=length, angle=angle)
-                p1 = line.p2
-                p1 = self.dragon_curve_recursive(order=order - 1, length=length, angle=angle, p1=p1)
-                angle = (angle - 90) % 360
-                p12 = self.dragon_curve_recursive(order=order - 1, length=length, angle=angle, p1=p1)
-                return p1
-            else:
-                print("ang: ", angle, "origin: ", p1.x, p1.y)
-                angle = (angle - 90) % 360
-                line = LineGraph(p1=p1, length=length, angle=angle)
-                line.draw(w=self.window, animation=True)
-                return line.p2
-        except Exception as e:
-            print("Exception on dragon_curve_recursive: ", e)
-
-
-d = DragonCurve().dragon_curve(order=3, length=100)
+d = DragonCurve()
+d.dragon_curve(order=4, length=100, angle=0)
+d.window.mainloop()

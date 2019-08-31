@@ -1,16 +1,18 @@
-import turtle
+from turtle import right, left, forward, speed, exitonclick, hideturtle
 
 
-def dragonCurve(order, length):
-  turn(order * 45)
-  dragonCurveRecursive(order, length, 1)
+def dragon(level=4, size=200, direction=45):
+    if level:
+        right(direction)
+        dragon(level - 1, size / 1.41421356237, 45)
+        left(direction * 2)
+        dragon(level - 1, size / 1.41421356237, -45)
+        right(direction)
+    else:
+        forward(size)
 
 
-def dragonCurveRecursive(order, length, sign):
-  if order == 0:
-    drawLine(length)
-  else:
-    rootHalf = (1 / 2) ** (1 / 2)
-    dragonCurveRecursive(order - 1, length * rootHalf, 1)
-    turn(sign * -90)
-    dragonCurveRecursive(order - 1, length * rootHalf, -1)
+speed(0)
+hideturtle()
+dragon(6)
+exitonclick()
