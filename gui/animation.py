@@ -1,6 +1,5 @@
 # coding: utf-8
 
-
 class Animation:
     def __init__(self, window, speed=10):
         self.frame = []

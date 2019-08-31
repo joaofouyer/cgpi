@@ -3,6 +3,10 @@ from primitives.point_graph import PointGraph
 from primitives.coordinate import Coordinate
 from gui.window import Window
 
+"""
+Doesn't work yet. For Dragon Curve fully working please refer to dragon_curve_test that was implemented with turtle.
+"""
+
 
 class DragonCurve:
     window = Window(title="Curva do Dragão", width=1000, height=1000, background="#FFFFFF")
@@ -25,6 +29,7 @@ class DragonCurve:
         except Exception as e:
             print("Exception on dragon_curve: ", e)
             return True
+
 
 d = DragonCurve()
 d.dragon_curve(order=4, length=100, angle=0)
