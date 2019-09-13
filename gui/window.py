@@ -4,9 +4,10 @@ import sys
 # Importante para garantir que funcione em python2 e em python3.
 
 if sys.version_info[0] < 3:
-    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
+    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, ENABLED
 else:
     from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
+    from tkinter import ACTIVE as ENABLED
 
 BTN_CONFIG = {
     "activebackground": "#6272A4",
@@ -51,6 +52,7 @@ class Window:
 
     def open(self):
         try:
+            self.refresh()
             return self.canvas.pack(side=RIGHT)
         except Exception as e:
             print("Exception in Window.open: ", e)
@@ -62,3 +64,33 @@ class Window:
             return False
         except Exception as e:
             print('mainloop: ', e)
+
+    def update_undo_btn_state(self):
+        try:
+            if len(self.actions.actions_stack):
+                self.undo_btn.config(state="normal")
+            else:
+                self.undo_btn.config(state="disabled")
+            return False
+        except Exception as e:
+            print("Exception on update_undo_btn_state: ", e)
+            return True
+
+    def update_redo_btn_state(self):
+        try:
+            if len(self.actions.undo_stack):
+                self.redo_btn.config(state="normal")
+            else:
+                self.redo_btn.config(state="disabled")
+            return False
+        except Exception as e:
+            print("Exception on update_redo_btn_state: ", e)
+            return True
+
+    def refresh(self):
+        try:
+            self.update_redo_btn_state()
+            self.update_undo_btn_state()
+        except Exception as e:
+            print("Exception on refresh: ", e)
+            return True

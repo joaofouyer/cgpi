@@ -29,6 +29,7 @@ class Action:
             action = self.undo_stack.pop()
             if action:
                 action.draw(window=window)
+            window.refresh()
             return action
         except IndexError:
             print("There's no action to be redone!")
@@ -42,6 +43,7 @@ class Action:
             action = self.pop()
             if action:
                 action.erase(window=window)
+            window.refresh()
             return False
 
         except IndexError:

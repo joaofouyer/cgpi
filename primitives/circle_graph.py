@@ -37,6 +37,7 @@ class CircleGraph(Circle, object):
                 PointGraph(window=window, x=x, y=y, size=self.thickness, color=self.color).draw()
             if action:
                 window.actions.push(action=self)
+            window.refresh()
             return False
 
         except Exception as e:

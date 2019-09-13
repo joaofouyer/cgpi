@@ -40,6 +40,7 @@ class LineGraph (Line, object):
                 self.iterate_over_y_axis(window=window, animation=animation)
             else:
                 self.iterate_over_x_axis(window=window, animation=animation)
+            window.refresh()
             return False
         except Exception as e:
             print("Exception on line.draw(): ", e)
