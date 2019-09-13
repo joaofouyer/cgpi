@@ -7,7 +7,9 @@ class Action:
         self.undo_stack = []
 
     def append(self, action):
+        print(action)
         self.actions_stack.append(action)
+        print(self.actions_stack)
 
     def pop(self):
         action = self.actions_stack.pop()

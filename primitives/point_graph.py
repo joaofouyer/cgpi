@@ -14,8 +14,10 @@ class PointGraph (Point, object):
         self.size = size
         self.color = color
 
-    def draw(self):
+    def draw(self, append_action=False):
         try:
+            if append_action:
+                self.window.actions.append(self=self)
             self.window.canvas.create_oval(self.x-self.size, self.y-self.size, self.x + self.size, self.y + self.size, fill=self.color, outline=self.color)
             return False
         except Exception as e:

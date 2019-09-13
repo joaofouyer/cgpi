@@ -29,6 +29,7 @@ class LineGraph (Line, object):
 
     def draw(self, w, animation=False):
         try:
+            w.actions.append(action=self)
             if self.delta_y_axis() > self.delta_x_axis():
                 self.iterate_over_y_axis(w, animation=animation)
             else:

@@ -33,13 +33,13 @@ class CircleGraph(Circle, object):
     
     def draw(self, window):
         try:
-
             for angle in range(0, 3600):
                 xc = round(self.build_circle_x(angle))
                 yc = round(self.build_circle_y(angle))
                 coordinate_cc = Coordinate(x=xc, y=yc)
                 pt = PointGraph(window=window, coordinate=coordinate_cc, size=self.thickness, color=self.color)
                 pt.draw()
+            window.actions.append(action=self)
         except Exception as e:
             print("Exception on draw_circle: ", e)
             return True

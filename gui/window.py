@@ -1,4 +1,5 @@
 # coding: utf-8
+from structures.action import Action
 import sys
 # Importante para garantir que funcione em python2 e em python3.
 
@@ -9,7 +10,7 @@ else:
 
 class Window:
 
-    def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff"):
+    def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff", actions=Action()):
         self.title = title
         self.width = width
         self.height = height
@@ -17,6 +18,7 @@ class Window:
         self.root = Tk()
         self.root.title(self.title)
         self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
+        self.actions = actions
 
     def open(self):
         try:
