@@ -31,11 +31,10 @@ class CircleGraph(Circle, object):
             return True   
     
     def draw_circle(self, window):
-        cc = Circle(center=self.center, radius=self.radius)
         try:
             for angle in range(0, 3600):
-                xc = round(cc.build_circle_x(angle))
-                yc = round(cc.build_circle_y(angle))
+                xc = round(self.build_circle_x(angle))
+                yc = round(self.build_circle_y(angle))
                 coordinate_cc = Coordinate(x=xc, y=yc)
                 pt = PointGraph(window=window, coordinate=coordinate_cc, size=self.thickness, color=self.color)
                 pt.draw()
