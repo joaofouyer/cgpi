@@ -31,8 +31,9 @@ class CircleGraph(Circle, object):
             print("Exception on set_properties: ", e)
             return True   
     
-    def draw_circle(self, window):
+    def draw(self, window):
         try:
+
             for angle in range(0, 3600):
                 xc = round(self.build_circle_x(angle))
                 yc = round(self.build_circle_y(angle))
