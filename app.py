@@ -13,9 +13,6 @@ def main():
         cc.draw(window=w)
         line = LineGraph(p1=Point(x=200, y=300), p2=Point(x=500, y=100))
         line.draw(window=w)
-        w.actions.undo(window=w)
-        w.actions.undo(window=w)
-        w.actions.redo(window=w)
         w.mainloop()
         return False
 

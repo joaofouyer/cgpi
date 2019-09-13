@@ -38,8 +38,8 @@ class Window:
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta")
         self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo")
         self.rectangle_btn = Button(self.root, BTN_CONFIG, text="Retângulo")
-        self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED)
-        self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED)
+        self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED, command=self.undo)
+        self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED, command=self.redo)
 
         self.point_btn.place(height=25, width=130, x=10, y=10)
         self.line_btn.place(height=25, width=130, x=10, y=45)
@@ -93,4 +93,18 @@ class Window:
             self.update_undo_btn_state()
         except Exception as e:
             print("Exception on refresh: ", e)
+            return True
+
+    def undo(self):
+        try:
+            return self.actions.undo(window=self)
+        except Exception as e:
+            print("Exception on window.undo: ", e)
+            return True
+
+    def redo(self):
+        try:
+            return self.actions.redo(window=self)
+        except Exception as e:
+            print("Exception on window.redo: ", e)
             return True
