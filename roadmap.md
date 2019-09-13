@@ -12,7 +12,8 @@ Definir o tamanho de forma relativa ao tamanho da janela principal, por exemplo,
 ## 3. Estrutura de Dados para Armazenar Desenhos realizados (João):
 Imagino que deverá ter dois tipos de estruturas:
 
-- A primeira que armazena os desenhos realizados pelo usuário em uma pilha, onde será possível desfazer o último desenho realizado, recuperar 
+- A primeira que armazena os desenhos realizados pelo usuário em uma pilha, onde será possível desfazer o último 
+desenho realizado, recuperar 
 qual desenho está mais "acima" e está sobrepondo outro desenho. (mais importante para agora)
 
 Existem duas formas diferentes de "desfazer" uma ação:
@@ -21,12 +22,14 @@ Essa opção é mais rápida, porém tem a deficiência de apagar também uma fi
 
 - A segunda seria redesenhar tudo, que não apagaria alguma figura sobreposta, mas seria mais lento.
 
-- A segunda que armazena os desenhos hierarquicamente, onde você tem uma figura, que é composta por camadas e as camadas são compostas por tipos primitivos.
+- A segunda que armazena os desenhos hierarquicamente, onde você tem uma figura, que é composta por camadas e as 
+camadas são compostas por tipos primitivos.
 Ela será útil para redesenhar toda a figura novamente e para exportar para xml. (menos importante agora)
 
 
 ## 4. Suportar desenho com clique do mouse (João):
-Desenhar os tipos primitivos com clique de mouse. Por ora, é suficiente que seja possível desenhar somente quando o segundo clique é realizado, descartando a reta, circulo e retangulo elásticos.
+Desenhar os tipos primitivos com clique de mouse. Por ora, é suficiente que seja possível desenhar somente quando o 
+segundo clique é realizado, descartando a reta, circulo e retangulo elásticos.
 Deverá implementar:
 - Desenho de reta
 - Desenho de círculo
