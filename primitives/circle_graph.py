@@ -2,6 +2,7 @@
 from primitives.circle import Circle
 from primitives.point_graph import PointGraph
 from primitives.coordinate import Coordinate
+from structures.action import Action
 import sys
 
 
