@@ -1,13 +1,13 @@
 # coding: utf-8
 from structures.action import Action
 import sys
+
 # Importante para garantir que funcione em python2 e em python3.
 
 if sys.version_info[0] < 3:
-    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, ENABLED
+    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
 else:
     from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
-    from tkinter import ACTIVE as ENABLED
 
 BTN_CONFIG = {
     "activebackground": "#6272A4",
@@ -23,6 +23,7 @@ BTN_CONFIG = {
 class Window:
 
     def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff", actions=Action()):
+
         self.title = title
         self.width = width
         self.height = height
@@ -31,8 +32,9 @@ class Window:
         self.root.title(self.title)
         self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
         self.actions = actions
-        frame = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
-        frame.pack(side=LEFT)
+
+        sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
+        sidebar.pack(side=LEFT)
 
         self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto")
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta")
@@ -50,6 +52,8 @@ class Window:
 
         self.canvas = Canvas(self.root, width=self.width-150, height=self.height, bg=self.background)
 
+        self.active_draw_mode = None
+
     def open(self):
         try:
             self.refresh()
@@ -60,6 +64,8 @@ class Window:
     def mainloop(self):
         try:
             self.open()
+            self.canvas.old_coords = None
+            self.root.bind('<ButtonPress-1>', self.click_event)
             mainloop()
             return False
         except Exception as e:
@@ -107,4 +113,20 @@ class Window:
             return self.actions.redo(window=self)
         except Exception as e:
             print("Exception on window.redo: ", e)
+            return True
+
+    def click_event(self, event):
+        try:
+            p1 =
+            print(event.x, event.y)
+
+            # self.root.bind('<ButtonPress-2', draw)
+            # if self.active_draw_mode == "POINT":
+            # elif self.active_draw_mode == "LINE":
+            # elif self.active_draw_mode == "CIRCLE":
+            # elif self.active_draw_mode == "RECTANGLE":
+
+            return False
+        except Exception as e:
+            print("Exception on click_event:", e)
             return True
