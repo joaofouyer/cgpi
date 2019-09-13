@@ -7,7 +7,7 @@ class Circle:
 
     def __init__(self, center, radius):
         try:
-            self.center = Point(coordinate=center)
+            self.center = center
             self.radius = radius
         except Exception as e:
             print("Circle init: ", e)
