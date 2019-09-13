@@ -1,8 +1,6 @@
 # coding: utf-8
 from primitives.circle import Circle
 from primitives.point_graph import PointGraph
-from primitives.coordinate import Coordinate
-from structures.action import Action
 import sys
 
 
@@ -31,15 +29,27 @@ class CircleGraph(Circle, object):
             print("Exception on set_properties: ", e)
             return True   
     
-    def draw(self, window):
+    def draw(self, window, action=True):
         try:
             for angle in range(0, 3600):
-                xc = round(self.build_circle_x(angle))
-                yc = round(self.build_circle_y(angle))
-                coordinate_cc = Coordinate(x=xc, y=yc)
-                pt = PointGraph(window=window, coordinate=coordinate_cc, size=self.thickness, color=self.color)
-                pt.draw()
-            window.actions.append(action=self)
+                x = round(self.build_circle_x(angle))
+                y = round(self.build_circle_y(angle))
+                PointGraph(window=window, x=x, y=y, size=self.thickness, color=self.color).draw()
+            if action:
+                window.actions.push(action=self)
+            return False
+
         except Exception as e:
             print("Exception on draw_circle: ", e)
+            return True
+
+    def erase(self, window):
+        try:
+            original_color = self.color
+            self.color = window.background
+            self.draw(window=window, action=False)
+            self.color = original_color
+            return False
+        except Exception as e:
+            print("Exception on erase_circle: ", e)
             return True

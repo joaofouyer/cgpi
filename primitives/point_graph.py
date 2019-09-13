@@ -1,23 +1,22 @@
 # coding: utf-8
 import sys
 from primitives.point import Point
-from primitives.coordinate import Coordinate
 
 
 class PointGraph (Point, object):
-    def __init__(self, coordinate=Coordinate(), window=None, size=1, color="#000000"):
+    def __init__(self, x, y, window=None, size=1, color="#000000"):
         if sys.version_info[0] < 3:
-            super(PointGraph, self).__init__(coordinate)
+            super(PointGraph, self).__init__(x=x, y=y)
         else:
-            super().__init__(coordinate)
+            super().__init__(x=x, y=y)
         self.window = window
         self.size = size
         self.color = color
 
-    def draw(self, append_action=False):
+    def draw(self, window=None, append_action=False):
         try:
             if append_action:
-                self.window.actions.append(self=self)
+                self.window.actions.push(self=self)
             self.window.canvas.create_oval(self.x-self.size, self.y-self.size, self.x + self.size, self.y + self.size, fill=self.color, outline=self.color)
             return False
         except Exception as e:
@@ -34,3 +33,14 @@ class PointGraph (Point, object):
                 return True
         except Exception as e:
             print("Exception in Point. ", e)
+
+    def erase(self, window):
+        try:
+            original_color = self.color
+            self.color = window.background
+            self.draw(append_action=False)
+            self.color = original_color
+            return False
+        except Exception as e:
+            print("Exception on PointGraph.erase: ", e)
+            return True

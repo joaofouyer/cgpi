@@ -15,6 +15,12 @@ Imagino que deverá ter dois tipos de estruturas:
 - A primeira que armazena os desenhos realizados pelo usuário em uma pilha, onde será possível desfazer o último desenho realizado, recuperar 
 qual desenho está mais "acima" e está sobrepondo outro desenho. (mais importante para agora)
 
+Existem duas formas diferentes de "desfazer" uma ação:
+- A primeira é "pintar" a figura com a mesma cor de fundo da janela.
+Essa opção é mais rápida, porém tem a deficiência de apagar também uma figura que estivesse sobreposta
+
+- A segunda seria redesenhar tudo, que não apagaria alguma figura sobreposta, mas seria mais lento.
+
 - A segunda que armazena os desenhos hierarquicamente, onde você tem uma figura, que é composta por camadas e as camadas são compostas por tipos primitivos.
 Ela será útil para redesenhar toda a figura novamente e para exportar para xml. (menos importante agora)
 

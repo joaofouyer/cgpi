@@ -1,7 +1,6 @@
 # coding: utf-8
 
 from gui.window import Window
-from primitives.coordinate import Coordinate
 from primitives.point_graph import PointGraph
 from primitives.line_graph import LineGraph
 from primitives.circle_graph import CircleGraph
@@ -10,7 +9,7 @@ from primitives.circle_graph import CircleGraph
 def draw():
     try:
         w = Window(title="Desenho da Sala", width=700, height=700, background="#FFFFFF")
-        center = PointGraph(coordinate=Coordinate(x=350, y=350), window=w, color="#000000")
+        center = PointGraph(x=350, y=350, window=w, color="#000000")
 
         outer_lines = []
         for angle in [30, 90, 270, 150, 210, 330]:

@@ -1,7 +1,7 @@
 # coding: utf-8
 import sys
-from primitives.coordinate import Coordinate
 from primitives.point_graph import PointGraph
+from primitives.point import Point
 from primitives.line import Line
 from gui.animation import Animation
 
@@ -14,6 +14,11 @@ class LineGraph (Line, object):
             super().__init__(p1, p2, length, angle)
         self.color = color
         self.thickness = thickness
+        if isinstance(self.p1, Point):
+            self.p1 = PointGraph(x=self.p1.x, y=self.p1.y, window=None, size=self.thickness, color=self.color)
+
+        if isinstance(self.p2, Point):
+            self.p2 = PointGraph(x=self.p2.x, y=self.p2.y, window=None, size=self.thickness, color=self.color)
 
     def set_properties(self, window, point):
         try:
@@ -27,13 +32,14 @@ class LineGraph (Line, object):
             print("Exception on set_properties: ", e)
             return True
 
-    def draw(self, w, animation=False):
+    def draw(self, window, animation=False, action=True):
         try:
-            w.actions.append(action=self)
+            if action:
+                window.actions.push(action=self)
             if self.delta_y_axis() > self.delta_x_axis():
-                self.iterate_over_y_axis(w, animation=animation)
+                self.iterate_over_y_axis(window=window, animation=animation)
             else:
-                self.iterate_over_x_axis(w, animation=animation)
+                self.iterate_over_x_axis(window=window, animation=animation)
             return False
         except Exception as e:
             print("Exception on line.draw(): ", e)
@@ -51,14 +57,13 @@ class LineGraph (Line, object):
                 x = pivot.x
                 self.set_properties(window=window, point=greater)
                 for y in range(pivot.y, greater.y):
-                    c = Coordinate(x=x, y=y)
-                    p = PointGraph(window=window, coordinate=c, size=self.thickness, color=self.color)
+                    p = PointGraph(window=window, x=x, y=y, size=self.thickness, color=self.color)
                     animation.append_frame(frame=p) if animation else p.draw()
             else:
                 self.set_properties(window=window, point=pivot)
                 for y in range(pivot.y, greater.y):
-                    c = Coordinate(x=self.x_linear_equation(y=y), y=y)
-                    p = PointGraph(window=window, coordinate=c, size=self.thickness, color=self.color)
+                    x = self.x_linear_equation(y=y)
+                    p = PointGraph(window=window, x=x, y=y, size=self.thickness, color=self.color)
                     animation.append_frame(frame=p) if animation else p.draw()
             animation.animate() if animation else False
             return False
@@ -76,11 +81,22 @@ class LineGraph (Line, object):
 
             self.set_properties(window=window, point=pivot)
             for x in range(pivot.x, greater.x):
-                c = Coordinate(x=x, y=self.y_linear_equation(x=x))
-                p = PointGraph(window=window, coordinate=c, size=self.thickness, color=self.color)
+                y = self.y_linear_equation(x=x)
+                p = PointGraph(window=window, x=x, y=y, size=self.thickness, color=self.color)
                 animation.append_frame(frame=p) if animation else p.draw()
             animation.animate() if animation else False
             return False
         except Exception as e:
             print("Exception on iterate_over_x_axis: ", e)
+            return True
+
+    def erase(self, window):
+        try:
+            original_color = self.color
+            self.color = window.background
+            self.draw(window=window, animation=False, action=False)
+            self.color = original_color
+            return False
+        except Exception as e:
+            print("Exception on line_graph.erase: ", e)
             return True

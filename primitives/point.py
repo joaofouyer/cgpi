@@ -1,14 +1,12 @@
 # coding: utf-8
-from primitives.coordinate import Coordinate
 
 
 class Point:
-    def __init__(self, coordinate=Coordinate()):
+    def __init__(self, x, y):
         try:
-            x, y = coordinate.get_coordinate()
             self.x = x
             self.y = y
-            self.coordinate = coordinate
+            self.coordinate = self.x, self.y
 
         except Exception as e:
             print("Exception in Point's init: ", e)
@@ -29,8 +27,7 @@ class Point:
             """
             x = round(self.x + cos(radians(angle))*length)
             y = round(self.y + sin(radians(angle*-1))*length)
-            coordinate = Coordinate(x=x, y=y)
-            p2 = PointGraph(coordinate=coordinate)
+            p2 = PointGraph(x=x, y=y)
             return p2
 
         except Exception as e:

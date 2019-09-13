@@ -1,6 +1,5 @@
 from primitives.line_graph import LineGraph
 from primitives.point_graph import PointGraph
-from primitives.coordinate import Coordinate
 from gui.window import Window
 
 """
@@ -10,7 +9,7 @@ Doesn't work yet. For Dragon Curve fully working please refer to dragon_curve_te
 
 class DragonCurve:
     window = Window(title="Curva do Dragão", width=1000, height=1000, background="#FFFFFF")
-    origin = PointGraph(coordinate=Coordinate(x=150, y=150))
+    origin = PointGraph(x=150, y=150)
 
     def dragon_curve(self, order, length, angle):
         try:

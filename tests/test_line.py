@@ -1,11 +1,10 @@
 # coding: utf-8
 from primitives.line import Line
-from primitives.coordinate import Coordinate
 from primitives.point import Point
 
 
 def test_line_length_angle_0():
-    p1 = Point(coordinate=Coordinate(x=250, y=250))
+    p1 = Point(x=250, y=250)
     line = Line(p1=p1, length=100, angle=0)
     assert line.p1 == p1
     assert line.p1.x == 250
@@ -25,7 +24,7 @@ def test_line_length_angle_0():
 
 
 def test_line_length_angle_90():
-    p1 = Point(coordinate=Coordinate(x=250, y=250))
+    p1 = Point(x=250, y=250)
     line = Line(p1=p1, length=100, angle=90)
     assert line.p1 == p1
     assert line.p1.x == 250
@@ -60,8 +59,8 @@ def test_line_delta_y():
 
 
 def test_line_y_axis():
-    p1 = Point(coordinate=Coordinate(x=50, y=5))
-    p2 = Point(coordinate=Coordinate(x=50, y=990))
+    p1 = Point(x=50, y=5)
+    p2 = Point(x=50, y=990)
     line = Line(p1=p1, p2=p2)
     assert line.p1 == p1
     assert line.p2 == p2
