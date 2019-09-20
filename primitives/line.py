@@ -1,5 +1,5 @@
 # coding: utf-8
-
+import math
 
 class Line:
     def __init__(self, p1, p2=None, length=None, angle=None):
@@ -15,6 +15,7 @@ class Line:
             raise Exception("To draw a line, you must specify p2 or its both length and angle from p1!")
         self.m = self.calc_slope()
         self.b = self.calc_b()
+        self.length = self.calc_length()
 
     def calc_slope(self):
         try:
@@ -61,3 +62,11 @@ class Line:
         except Exception as e:
             print("Exception on x_linear_equation: ", e)
             return False
+
+    def calc_length(self):
+        try:
+            return math.sqrt((math.pow((self.p1.x - self.p2.x), 2) + ( math.pow((self.p1.y - self.p2.y), 2))))
+
+        except Exception as e:
+            print("calc_length: ", e)
+            return None
