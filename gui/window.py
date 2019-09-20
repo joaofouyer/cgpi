@@ -1,5 +1,8 @@
 # coding: utf-8
 from structures.action import Action
+from primitives.point_graph import PointGraph
+from primitives.circle_graph import CircleGraph
+from primitives.line_graph import LineGraph
 import sys
 
 # Importante para garantir que funcione em python2 e em python3.
@@ -36,10 +39,10 @@ class Window:
         sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
         sidebar.pack(side=LEFT)
 
-        self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto")
-        self.line_btn = Button(self.root, BTN_CONFIG, text="Reta")
-        self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo")
-        self.rectangle_btn = Button(self.root, BTN_CONFIG, text="Retângulo")
+        self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
+        self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
+        self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo", command=self.draw_circle)
+        self.rectangle_btn = Button(self.root, BTN_CONFIG, text="Retângulo", command=self.draw_rectangle)
         self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED, command=self.undo)
         self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED, command=self.redo)
 
@@ -53,6 +56,7 @@ class Window:
         self.canvas = Canvas(self.root, width=self.width-150, height=self.height, bg=self.background)
 
         self.active_draw_mode = None
+        self.canvas.old_coords = None
 
     def open(self):
         try:
@@ -64,7 +68,6 @@ class Window:
     def mainloop(self):
         try:
             self.open()
-            self.canvas.old_coords = None
             self.root.bind('<ButtonPress-1>', self.click_event)
             mainloop()
             return False
@@ -117,16 +120,61 @@ class Window:
 
     def click_event(self, event):
         try:
-            p1 =
             print(event.x, event.y)
-
-            # self.root.bind('<ButtonPress-2', draw)
-            # if self.active_draw_mode == "POINT":
-            # elif self.active_draw_mode == "LINE":
-            # elif self.active_draw_mode == "CIRCLE":
-            # elif self.active_draw_mode == "RECTANGLE":
-
+            point = PointGraph(x=event.x, y=event.y, window=self)
+            if self.active_draw_mode == "POINT":
+                point.draw(append_action=True)
+                self.canvas.old_coords = None
+            else:
+                if self.canvas.old_coords:
+                    p1 = self.canvas.old_coords
+                    p2 = point
+                    if self.active_draw_mode == "LINE":
+                        line = LineGraph(p1=p1, p2=p2)
+                        line.draw(window=self, animation=False)
+                        self.canvas.old_coords = None
+                    elif self.active_draw_mode == "CIRCLE":
+                        line = LineGraph(p1=p1, p2=p2)
+                        circle = CircleGraph(center=p1, radius=line.length)
+                        circle.draw(window=self, animation=False)
+                        self.canvas.old_coords = None
+                    elif self.active_draw_mode == "RECTANGLE":
+                        pass # TODO
+                else:
+                    self.canvas.old_coords = point
             return False
         except Exception as e:
             print("Exception on click_event:", e)
+            return True
+
+    def draw_point(self):
+        try:
+            self.active_draw_mode = "POINT"
+            return False
+        except Exception as e:
+            print("Exception on draw_point:", e)
+            return True
+
+    def draw_line(self):
+        try:
+            self.active_draw_mode = "LINE"
+            return False
+        except Exception as e:
+            print("Exception on draw_line:", e)
+            return True
+
+    def draw_circle(self):
+        try:
+            self.active_draw_mode = "CIRCLE"
+            return False
+        except Exception as e:
+            print("Exception on draw_circle:", e)
+            return True
+
+    def draw_rectangle(self):
+        try:
+            self.active_draw_mode = "RECTANGLE"
+            return False
+        except Exception as e:
+            print("Exception on draw_rectangle:", e)
             return True

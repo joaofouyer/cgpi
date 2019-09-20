@@ -11,7 +11,7 @@ def main():
         w = Window(title="Testando Desfazer Ações", width=700, height=650, background="white", actions=Action())
         cc = CircleGraph(center=Point(x=120, y=120), radius=50, color="#000000", thickness=2)
         cc.draw(window=w)
-        line = LineGraph(p1=Point(x=200, y=300), p2=Point(x=500, y=100))
+        line = LineGraph(p1=Point(x=50, y=120), p2=Point(x=500, y=120))
         line.draw(window=w)
         w.mainloop()
         return False
