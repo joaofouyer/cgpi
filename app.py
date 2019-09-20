@@ -23,5 +23,4 @@ def main():
         print("Exception on main(): ", e)
         return True
 
-
 main()

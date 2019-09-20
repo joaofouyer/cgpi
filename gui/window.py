@@ -3,6 +3,7 @@ from structures.action import Action
 from primitives.point_graph import PointGraph
 from primitives.circle_graph import CircleGraph
 from primitives.line_graph import LineGraph
+from primitives.rectangle_graph import RectangleGraph
 import sys
 
 # Importante para garantir que funcione em python2 e em python3.
@@ -68,7 +69,7 @@ class Window:
     def mainloop(self):
         try:
             self.open()
-            self.root.bind('<ButtonPress-1>', self.click_event)
+            self.canvas.bind('<ButtonPress-1>', self.click_event)
             mainloop()
             return False
         except Exception as e:
@@ -120,7 +121,6 @@ class Window:
 
     def click_event(self, event):
         try:
-            print(event.x, event.y)
             point = PointGraph(x=event.x, y=event.y, window=self)
             if self.active_draw_mode == "POINT":
                 point.draw(append_action=True)
@@ -136,10 +136,13 @@ class Window:
                     elif self.active_draw_mode == "CIRCLE":
                         line = LineGraph(p1=p1, p2=p2)
                         circle = CircleGraph(center=p1, radius=line.length)
-                        circle.draw(window=self, animation=False)
+                        circle.draw(window=self)
                         self.canvas.old_coords = None
                     elif self.active_draw_mode == "RECTANGLE":
-                        pass # TODO
+                        rectangle = RectangleGraph(p1=p1, p2=p2)
+                        rectangle.draw(window=self)
+                        self.canvas.old_coords = None
+
                 else:
                     self.canvas.old_coords = point
             return False

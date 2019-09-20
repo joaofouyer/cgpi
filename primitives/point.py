@@ -27,6 +27,7 @@ class Point:
             """
             x = round(self.x + cos(radians(angle))*length)
             y = round(self.y + sin(radians(angle*-1))*length)
+
             p2 = PointGraph(x=x, y=y)
             return p2
 
