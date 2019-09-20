@@ -12,40 +12,33 @@ class RectangleGraph (LineGraph, object):
             super(RectangleGraph, self).__init__(p1, p2, length)
         else:
             super().__init__(p1, p2, length)
+
         self.color = color
         self.thickness = thickness
+
         if isinstance(self.p1, Point):
             self.p1 = PointGraph(x=self.p1.x, y=self.p1.y, window=None, size=self.thickness, color=self.color)
 
         if isinstance(self.p2, Point):
             self.p2 = PointGraph(x=self.p2.x, y=self.p2.y, window=None, size=self.thickness, color=self.color)
 
-    def set_properties(self, window, point):
-        try:
-            p = point
-            p.color = self.color
-            p.size = self.thickness
-            p.window = window
-            p.draw()
-            return False
-        except Exception as e:
-            print("Exception on set_properties: ", e)
-            return True
+        self.p3 = PointGraph(x=self.p1.x, y=self.p2.y, size=self.thickness, color=self.color)
+        self.p4 = PointGraph(x=p2.x, y=p1.y, size=self.thickness, color=self.color)
 
     def draw(self, window, animation=False, action=True):
         try:
-            p3 = PointGraph(p1.y, p2.x, w=window, size=1, color=#000000)
-            p4 = PointGraph(p1.x, p2.y, w=window, size=1, color=  # 000000)
-            line1 = LineGraph(p1, p3, color="#000000", thickness=1)
-            line2 = LineGraph(p2, p4, color="#000000", thickness=1)
-            line3 = LineGraph(p1, p4, color="#000000", thickness=1)
-            line4 = LineGraph(p2, p3, color="#000000", thickness=1)
+            if action:
+                window.actions.push(action=self)
+            LineGraph(self.p1, self.p3, color=self.color, thickness=self.thickness).draw(window=window, action=False)
+            LineGraph(self.p3, self.p2, color=self.color, thickness=self.thickness).draw(window=window, action=False)
+            LineGraph(self.p2, self.p4, color=self.color, thickness=self.thickness).draw(window=window, action=False)
+            LineGraph(self.p4, self.p1, color=self.color, thickness=self.thickness).draw(window=window, action=False)
+
             window.refresh()
             return False
         except Exception as e:
-            print("Exception on line.draw(): ", e)
+            print("Exception on rectangle.draw(): ", e)
             return True
-
 
     def erase(self, window):
         try:
@@ -55,5 +48,5 @@ class RectangleGraph (LineGraph, object):
             self.color = original_color
             return False
         except Exception as e:
-            print("Exception on line_graph.erase: ", e)
+            print("Exception on rectangle_graph.erase: ", e)
             return True
