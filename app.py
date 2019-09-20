@@ -1,7 +1,7 @@
 # coding: utf-8
 from gui.window import Window
 from primitives.circle_graph import CircleGraph
-from primitives.rectangle import RectangleGraph
+from primitives.rectangle_graph import RectangleGraph
 from primitives.line_graph import LineGraph
 from primitives.point import Point
 from structures.action import Action
