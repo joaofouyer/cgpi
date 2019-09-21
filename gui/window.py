@@ -4,7 +4,6 @@ from primitives.point_graph import PointGraph
 from primitives.circle_graph import CircleGraph
 from primitives.line_graph import LineGraph
 from primitives.rectangle_graph import RectangleGraph
-from gui.viewport import Viewport as vp
 import sys
 
 # Importante para garantir que funcione em python2 e em python3.
@@ -40,6 +39,7 @@ def reduce_x(x):
     except Exception as e:
         print("Failed to reduce x:", e)
 
+
 class Window:
 
     def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff", actions=Action()):
@@ -56,6 +56,8 @@ class Window:
         sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
         sidebar.pack(side=LEFT)
 
+        small_viewport = Canvas(self.root, width=150, height=150, bg=self.background)
+        small_viewport.place(x=0, y=500)
 
         self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
@@ -71,7 +73,7 @@ class Window:
         self.undo_btn.place(height=25, width=130, x=10, y=150)
         self.redo_btn.place(height=25, width=130, x=10, y=185)
 
-        self.canvas = Canvas(self.root, width=self.width-150, height=self.height, bg=self.background)
+        self.canvas = Canvas(self.root, width=self.width - 150, height=self.height, bg=self.background)
 
         self.active_draw_mode = None
         self.canvas.old_coords = None
@@ -205,4 +207,3 @@ class Window:
         except Exception as e:
             print("Exception on draw_rectangle:", e)
             return True
-
