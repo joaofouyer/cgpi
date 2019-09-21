@@ -4,6 +4,7 @@ from primitives.point_graph import PointGraph
 from primitives.circle_graph import CircleGraph
 from primitives.line_graph import LineGraph
 from primitives.rectangle_graph import RectangleGraph
+from gui.viewport import Viewport as vp
 import sys
 
 # Importante para garantir que funcione em python2 e em python3.
@@ -24,6 +25,21 @@ BTN_CONFIG = {
 }
 
 
+def reduce_y(y):
+    try:
+        small_y = (y - 0) % (500 - 0)
+        return (small_y - 0) % (150 - 0)
+    except Exception as e:
+        print("Failed to reduce y:", e)
+
+
+def reduce_x(x):
+    try:
+        small_x = (x - 0) % (500 - 0)
+        return (small_x - 0) % (150 - 0)
+    except Exception as e:
+        print("Failed to reduce x:", e)
+
 class Window:
 
     def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff", actions=Action()):
@@ -40,8 +56,6 @@ class Window:
         sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
         sidebar.pack(side=LEFT)
 
-        self.small_viewport = Canvas(self.root, width=150, height=150, bg="#ffffff")
-        self.small_viewport.place(x=0, y=500)
 
         self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
@@ -133,18 +147,22 @@ class Window:
                 if self.canvas.old_coords:
                     p1 = self.canvas.old_coords
                     p2 = point
-                    sp1 = self.small_viewport.old_coord
-                    sp2 =
+
                     if self.active_draw_mode == "LINE":
+
                         line = LineGraph(p1=p1, p2=p2)
                         line.draw(window=self, animation=False)
                         self.canvas.old_coords = None
+
                     elif self.active_draw_mode == "CIRCLE":
+
                         line = LineGraph(p1=p1, p2=p2)
                         circle = CircleGraph(center=p1, radius=line.length)
                         circle.draw(window=self)
                         self.canvas.old_coords = None
+
                     elif self.active_draw_mode == "RECTANGLE":
+
                         rectangle = RectangleGraph(p1=p1, p2=p2)
                         rectangle.draw(window=self)
                         self.canvas.old_coords = None
@@ -188,6 +206,3 @@ class Window:
             print("Exception on draw_rectangle:", e)
             return True
 
-    def reduce(self, xmax, ymax, x, y):
-        try:
-            small_x =
