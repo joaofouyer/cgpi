@@ -40,6 +40,9 @@ class Window:
         sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
         sidebar.pack(side=LEFT)
 
+        self.small_viewport = Canvas(self.root, width=150, height=150, bg="#ffffff")
+        self.small_viewport.place(x=0, y=500)
+
         self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
         self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo", command=self.draw_circle)
@@ -125,10 +128,13 @@ class Window:
             if self.active_draw_mode == "POINT":
                 point.draw(append_action=True)
                 self.canvas.old_coords = None
+                self.small_viewport.old_coord = None
             else:
                 if self.canvas.old_coords:
                     p1 = self.canvas.old_coords
                     p2 = point
+                    sp1 = self.small_viewport.old_coord
+                    sp2 =
                     if self.active_draw_mode == "LINE":
                         line = LineGraph(p1=p1, p2=p2)
                         line.draw(window=self, animation=False)
@@ -181,3 +187,7 @@ class Window:
         except Exception as e:
             print("Exception on draw_rectangle:", e)
             return True
+
+    def reduce(self, xmax, ymax, x, y):
+        try:
+            small_x =
