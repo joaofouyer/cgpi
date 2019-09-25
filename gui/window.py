@@ -56,8 +56,11 @@ class Window:
         sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
         sidebar.pack(side=LEFT)
 
-        small_viewport = Canvas(self.root, width=150, height=150, bg=self.background)
-        small_viewport.place(x=0, y=500)
+        sidebar_leg = Frame(width=10, height=self.height, bg="#282A36", borderwidth=2)
+        sidebar.place(x=155, y=0)
+
+        # small_viewport = Canvas(self.root, width=150, height=150, bg=self.background)
+        # small_viewport.place(x=0, y=500)
 
         self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
@@ -141,10 +144,11 @@ class Window:
     def click_event(self, event):
         try:
             point = PointGraph(x=event.x, y=event.y, window=self)
+            reduced_point = PointGraph(x=reduce_x(event.x), y=reduce_y(event.y), window=self)
             if self.active_draw_mode == "POINT":
                 point.draw(append_action=True)
+                reduced_point.draw(append_action=True)
                 self.canvas.old_coords = None
-                self.small_viewport.old_coord = None
             else:
                 if self.canvas.old_coords:
                     p1 = self.canvas.old_coords
@@ -154,6 +158,10 @@ class Window:
 
                         line = LineGraph(p1=p1, p2=p2)
                         line.draw(window=self, animation=False)
+
+                        reduced_line = LineGraph(p1=reduce_x(p1), p2= reduce_y(reduced_point))
+                        reduced_line.draw(window=self, animation=False)
+
                         self.canvas.old_coords = None
 
                     elif self.active_draw_mode == "CIRCLE":
@@ -161,12 +169,19 @@ class Window:
                         line = LineGraph(p1=p1, p2=p2)
                         circle = CircleGraph(center=p1, radius=line.length)
                         circle.draw(window=self)
+
+                        reduced_line = LineGraph(p1=reduce_x(p1), p2=reduce_y(p2))
+                        reduced_circle = CircleGraph(center=reduce_x(p1), radius=reduced_line.length)
+                        reduced_circle.draw(window=self)
                         self.canvas.old_coords = None
 
                     elif self.active_draw_mode == "RECTANGLE":
 
                         rectangle = RectangleGraph(p1=p1, p2=p2)
                         rectangle.draw(window=self)
+
+                        reduced_rectangle = RectangleGraph(p1=reduce_x(p1), p2=reduce_y(p2))
+                        reduced_rectangle.draw(window=self)
                         self.canvas.old_coords = None
 
                 else:
