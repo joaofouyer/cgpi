@@ -42,7 +42,7 @@ def reduce_x(x):
 
 class Window:
 
-    def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff", actions=Action()):
+    def __init__(self, title="PUC-SP", width=655, height=500, background="#ffffff", actions=Action()):
 
         self.title = title
         self.width = width
@@ -54,7 +54,7 @@ class Window:
         self.actions = actions
 
         sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
-        sidebar.pack(side=LEFT)
+        sidebar.place(x=0, y=0)
 
         sidebar_leg = Frame(width=10, height=self.height, bg="#282A36", borderwidth=2)
         sidebar.place(x=155, y=0)
