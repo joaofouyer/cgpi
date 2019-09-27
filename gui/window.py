@@ -56,6 +56,9 @@ class Window:
 
         self.canvas = Canvas(self.root, width=self.width-150, height=self.height, bg=self.background)
 
+        self.active_draw_mode = None
+        self.canvas.old_coords = None
+
     def open(self):
         try:
             self.refresh()
@@ -66,6 +69,7 @@ class Window:
     def mainloop(self):
         try:
             self.open()
+            self.canvas.bind('<ButtonPress-1>', self.click_event)
             mainloop()
             return False
         except Exception as e:
