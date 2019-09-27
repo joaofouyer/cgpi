@@ -33,10 +33,9 @@ class Window:
         self.background = background
         self.root = Tk()
         self.root.title(self.title)
-        self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
         self.actions = actions
 
-        sidebar = Frame(width=(self.width*0.2), height=self.height, bg="#282A36", borderwidth=2)
+        sidebar = Frame(width=(self.width*0.17), height=self.height, bg="#282A36", borderwidth=2)
         sidebar.pack(side=LEFT)
 
         self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
@@ -46,17 +45,16 @@ class Window:
         self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED, command=self.undo)
         self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED, command=self.redo)
 
-        self.point_btn.place(height=25, width=130, x=10, y=10)
-        self.line_btn.place(height=25, width=130, x=10, y=45)
-        self.circle_btn.place(height=25, width=130, x=10, y=80)
-        self.rectangle_btn.place(height=25, width=130, x=10, y=115)
-        self.undo_btn.place(height=25, width=130, x=10, y=150)
-        self.redo_btn.place(height=25, width=130, x=10, y=185)
-
-        self.canvas = Canvas(self.root, width=self.width-(self.width*0.2), height=self.height, bg=self.background)
-        self.viewport = Viewport(root=self.root, width=(self.width*0.15), height=(self.height*0.2), background=self.background)
-        self.viewport.canvas.place(x=10, y=self.height-140)
-
+        self.point_btn.place(height=25, width=(self.width*0.15), x=10, y=10)
+        self.line_btn.place(height=25, width=(self.width*0.15), x=10, y=45)
+        self.circle_btn.place(height=25, width=(self.width*0.15), x=10, y=80)
+        self.rectangle_btn.place(height=25, width=(self.width*0.15), x=10, y=115)
+        self.undo_btn.place(height=25, width=(self.width*0.15), x=10, y=150)
+        self.redo_btn.place(height=25, width=(self.width*0.15), x=10, y=185)
+        self.canvas_width = self.width - (self.width*0.17)
+        self.canvas = Canvas(self.root, width=self.canvas_width, height=self.height, bg=self.background)
+        self.viewport = Viewport(root=self.root, width=self.canvas_width * 0.15, height=(self.height*0.15), background=self.background)
+        self.viewport.canvas.place(x=10, y=(self.height - self.height*0.17))
 
         self.active_draw_mode = None
         self.canvas.old_coords = None

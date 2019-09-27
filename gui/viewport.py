@@ -21,7 +21,7 @@ class Viewport:
     def reduce(self, x, y, window):
         try:
             small_y = (y * self.height) / window.height
-            small_x = (x * self.width) / window.height
+            small_x = (x * self.width) / window.canvas_width
             return small_x, small_y
         except Exception as e:
             print("Exception on reduce: ", e)
