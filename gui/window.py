@@ -1,4 +1,5 @@
 # coding: utf-8
+from gui.viewport import Viewport
 from structures.action import Action
 import sys
 # Importante para garantir que funcione em python2 e em python3.
@@ -31,6 +32,7 @@ class Window:
         self.root.title(self.title)
         self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
         self.actions = actions
+
         frame = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
         frame.pack(side=LEFT)
 
@@ -41,12 +43,16 @@ class Window:
         self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED, command=self.undo)
         self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED, command=self.redo)
 
+        self.viewport = Viewport(root=self.root, width=130, height=130, background=self.background)
+
         self.point_btn.place(height=25, width=130, x=10, y=10)
         self.line_btn.place(height=25, width=130, x=10, y=45)
         self.circle_btn.place(height=25, width=130, x=10, y=80)
         self.rectangle_btn.place(height=25, width=130, x=10, y=115)
         self.undo_btn.place(height=25, width=130, x=10, y=150)
         self.redo_btn.place(height=25, width=130, x=10, y=185)
+
+        self.viewport.canvas.place(x=10, y=self.height-140)
 
         self.canvas = Canvas(self.root, width=self.width-150, height=self.height, bg=self.background)
 
