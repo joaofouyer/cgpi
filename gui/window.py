@@ -11,7 +11,7 @@ import sys
 if sys.version_info[0] < 3:
     from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
 else:
-    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
+    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, Toplevel
 
 BTN_CONFIG = {
     "activebackground": "#6272A4",
@@ -26,19 +26,18 @@ BTN_CONFIG = {
 
 def reduce_y(y):
     try:
-        small_y = (y - 0) % (500 - 0)
-        return (small_y - 0) % (150 - 0)
+        small_y = (y * 150)/650
+        return small_y
     except Exception as e:
         print("Failed to reduce y:", e)
 
 
 def reduce_x(x):
     try:
-        small_x = (x - 0) % (500 - 0)
-        return (small_x - 0) % (150 - 0)
+        small_x = (x * 150) / 750
+        return small_x
     except Exception as e:
         print("Failed to reduce x:", e)
-
 
 class Window:
 
@@ -53,14 +52,14 @@ class Window:
         self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
         self.actions = actions
 
-        sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
+        sidebar = Frame(width=150, height=self.height - 150, bg="#282A36", borderwidth=2)
         sidebar.place(x=0, y=0)
 
         sidebar_leg = Frame(width=10, height=self.height, bg="#282A36", borderwidth=2)
-        sidebar.place(x=155, y=0)
+        sidebar_leg.place(x=150, y=0)
 
-        # small_viewport = Canvas(self.root, width=150, height=150, bg=self.background)
-        # small_viewport.place(x=0, y=500)
+        self.small_viewport = Canvas(self.root, width=150, height=150, bg=self.background)
+        self.small_viewport.place(x=0, y=500)
 
         self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
@@ -76,10 +75,21 @@ class Window:
         self.undo_btn.place(height=25, width=130, x=10, y=150)
         self.redo_btn.place(height=25, width=130, x=10, y=185)
 
-        self.canvas = Canvas(self.root, width=self.width - 150, height=self.height, bg=self.background)
+        self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
+        sidebar.lift(self.canvas)
+        sidebar_leg.lift(self.canvas)
+        self.point_btn.lift(sidebar)
+        self.line_btn.lift(sidebar)
+        self.circle_btn.lift(sidebar)
+        self.rectangle_btn.lift(sidebar)
+        self.undo_btn.lift(sidebar)
+        self.redo_btn.lift(sidebar)
 
         self.active_draw_mode = None
         self.canvas.old_coords = None
+
+    def viewport(self):
+        vp = Toplevel(self.root)
 
     def open(self):
         try:
@@ -87,6 +97,7 @@ class Window:
             return self.canvas.pack(side=RIGHT)
         except Exception as e:
             print("Exception in Window.open: ", e)
+
 
     def mainloop(self):
         try:
@@ -144,7 +155,7 @@ class Window:
     def click_event(self, event):
         try:
             point = PointGraph(x=event.x, y=event.y, window=self)
-            reduced_point = PointGraph(x=reduce_x(event.x), y=reduce_y(event.y), window=self)
+            reduced_point = PointGraph(x=reduce_x(event.x), y=reduce_y(event.y), window=vp)
             if self.active_draw_mode == "POINT":
                 point.draw(append_action=True)
                 reduced_point.draw(append_action=True)
@@ -154,13 +165,16 @@ class Window:
                     p1 = self.canvas.old_coords
                     p2 = point
 
+                    reduced_p1 = PointGraph(x=reduce_x(self.canvas.old_coords.x), y=reduce_y(self.canvas.old_coords.y), window=vp)
+                    reduced_p2 = reduced_point
+
                     if self.active_draw_mode == "LINE":
 
                         line = LineGraph(p1=p1, p2=p2)
                         line.draw(window=self, animation=False)
 
-                        reduced_line = LineGraph(p1=reduce_x(p1), p2= reduce_y(reduced_point))
-                        reduced_line.draw(window=self, animation=False)
+                        reduced_line = LineGraph(p1=reduced_p1, p2=reduced_p2)
+                        reduced_line.draw(window=vp, animation=False)
 
                         self.canvas.old_coords = None
 
@@ -170,18 +184,23 @@ class Window:
                         circle = CircleGraph(center=p1, radius=line.length)
                         circle.draw(window=self)
 
-                        reduced_line = LineGraph(p1=reduce_x(p1), p2=reduce_y(p2))
-                        reduced_circle = CircleGraph(center=reduce_x(p1), radius=reduced_line.length)
-                        reduced_circle.draw(window=self)
+                        reduced_line = LineGraph(p1=reduced_p1, p2=reduced_p2)
+                        reduced_circle = CircleGraph(center=reduced_p1, radius=reduced_line.length)
+                        reduced_circle.draw(window=vp)
                         self.canvas.old_coords = None
+
+                        print("x original: ", p1.x)
+                        print("y original: ", p1.y)
+                        print("x reduzido: ", reduced_p1.x)
+                        print("y reduzido: ", reduced_p1.y)
 
                     elif self.active_draw_mode == "RECTANGLE":
 
                         rectangle = RectangleGraph(p1=p1, p2=p2)
                         rectangle.draw(window=self)
 
-                        reduced_rectangle = RectangleGraph(p1=reduce_x(p1), p2=reduce_y(p2))
-                        reduced_rectangle.draw(window=self)
+                        reduced_rectangle = RectangleGraph(p1=reduced_p1, p2=reduced_p2)
+                        reduced_rectangle.draw(window=vp)
                         self.canvas.old_coords = None
 
                 else:
