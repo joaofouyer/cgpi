@@ -9,7 +9,7 @@ from structures.action import Action
 
 def main():
     try:
-        w = Window(title="Testando Desfazer Ações", width=700, height=650, background="white", actions=Action())
+        w = Window(title="Testando Desfazer Ações", width=1400, height=650, background="white", actions=Action())
         rec = RectangleGraph(p1=Point(x=25, y=50), p2=Point(x=250, y=200), color="#000000", thickness=2)
         rec.draw(window=w)
         cc = CircleGraph(center=Point(x=120, y=120), radius=50, color="#000000", thickness=2)
