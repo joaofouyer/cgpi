@@ -4,6 +4,7 @@ from primitives.point_graph import PointGraph
 from primitives.circle_graph import CircleGraph
 from primitives.line_graph import LineGraph
 from primitives.rectangle_graph import RectangleGraph
+from gui.viewport import Viewport
 import sys
 
 # Importante para garantir que funcione em python2 e em python3.
@@ -24,21 +25,6 @@ BTN_CONFIG = {
 }
 
 
-def reduce_y(y):
-    try:
-        small_y = (y * 150)/650
-        return small_y
-    except Exception as e:
-        print("Failed to reduce y:", e)
-
-
-def reduce_x(x):
-    try:
-        small_x = (x * 150) / 750
-        return small_x
-    except Exception as e:
-        print("Failed to reduce x:", e)
-
 class Window:
 
     def __init__(self, title="PUC-SP", width=655, height=500, background="#ffffff", actions=Action()):
@@ -55,12 +41,6 @@ class Window:
         sidebar = Frame(width=150, height=self.height - 150, bg="#282A36", borderwidth=2)
         sidebar.place(x=0, y=0)
 
-        sidebar_leg = Frame(width=10, height=self.height, bg="#282A36", borderwidth=2)
-        sidebar_leg.place(x=150, y=0)
-
-        self.small_viewport = Canvas(self.root, width=150, height=150, bg=self.background)
-        self.small_viewport.place(x=0, y=500)
-
         self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
         self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo", command=self.draw_circle)
@@ -75,9 +55,6 @@ class Window:
         self.undo_btn.place(height=25, width=130, x=10, y=150)
         self.redo_btn.place(height=25, width=130, x=10, y=185)
 
-        self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
-        sidebar.lift(self.canvas)
-        sidebar_leg.lift(self.canvas)
         self.point_btn.lift(sidebar)
         self.line_btn.lift(sidebar)
         self.circle_btn.lift(sidebar)
@@ -85,11 +62,23 @@ class Window:
         self.undo_btn.lift(sidebar)
         self.redo_btn.lift(sidebar)
 
+        # sidebar_leg = Frame(width=10, height=self.height, bg="#282A36", borderwidth=2)
+        # sidebar_leg.place(x=150, y=0)
+
+        # self.small_viewport = Canvas(self.root, width=150, height=150, bg=self.background)
+        # self.small_viewport.place(x=0, y=500)
+
+        # sidebar.lift(self.canvas)
+        # sidebar_leg.lift(self.canvas)
+
+        self.viewport = Viewport(root=self.root, width=100, height=self.height, background=self.background)
+        self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
+
         self.active_draw_mode = None
         self.canvas.old_coords = None
 
-    def viewport(self):
-        vp = Toplevel(self.root)
+    # def viewport(self):
+    #     vp = Toplevel(self.root)
 
     def open(self):
         try:
