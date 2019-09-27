@@ -12,7 +12,7 @@ class Action:
         except Exception as e:
             print("Excetpion on push: ", e)
 
-    def pop(self):
+    def pop(self, window):
         try:
             action = self.actions_stack.pop()
             self.undo_stack.append(action)
@@ -40,7 +40,7 @@ class Action:
 
     def undo(self, window):
         try:
-            action = self.pop()
+            action = self.pop(window=window)
             if action:
                 action.erase(window=window)
             window.refresh()

@@ -1,18 +1,14 @@
 # coding: utf-8
-from structures.action import Action
-from primitives.point_graph import PointGraph
-from primitives.circle_graph import CircleGraph
-from primitives.line_graph import LineGraph
-from primitives.rectangle_graph import RectangleGraph
 from gui.viewport import Viewport
+from structures.action import Action
 import sys
-
 # Importante para garantir que funcione em python2 e em python3.
 
 if sys.version_info[0] < 3:
-    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
+    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, ENABLED
 else:
-    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, Toplevel
+    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
+    from tkinter import ACTIVE as ENABLED
 
 BTN_CONFIG = {
     "activebackground": "#6272A4",
@@ -27,8 +23,7 @@ BTN_CONFIG = {
 
 class Window:
 
-    def __init__(self, title="PUC-SP", width=655, height=500, background="#ffffff", actions=Action()):
-
+    def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff", actions=Action()):
         self.title = title
         self.width = width
         self.height = height
@@ -38,15 +33,17 @@ class Window:
         self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
         self.actions = actions
 
-        sidebar = Frame(width=150, height=self.height - 150, bg="#282A36", borderwidth=2)
-        sidebar.place(x=0, y=0)
+        frame = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
+        frame.pack(side=LEFT)
 
-        self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
-        self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
-        self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo", command=self.draw_circle)
-        self.rectangle_btn = Button(self.root, BTN_CONFIG, text="Retângulo", command=self.draw_rectangle)
+        self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto")
+        self.line_btn = Button(self.root, BTN_CONFIG, text="Reta")
+        self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo")
+        self.rectangle_btn = Button(self.root, BTN_CONFIG, text="Retângulo")
         self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED, command=self.undo)
         self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED, command=self.redo)
+
+        self.viewport = Viewport(root=self.root, width=130, height=130, background=self.background)
 
         self.point_btn.place(height=25, width=130, x=10, y=10)
         self.line_btn.place(height=25, width=130, x=10, y=45)
@@ -55,30 +52,9 @@ class Window:
         self.undo_btn.place(height=25, width=130, x=10, y=150)
         self.redo_btn.place(height=25, width=130, x=10, y=185)
 
-        self.point_btn.lift(sidebar)
-        self.line_btn.lift(sidebar)
-        self.circle_btn.lift(sidebar)
-        self.rectangle_btn.lift(sidebar)
-        self.undo_btn.lift(sidebar)
-        self.redo_btn.lift(sidebar)
+        self.viewport.canvas.place(x=10, y=self.height-140)
 
-        # sidebar_leg = Frame(width=10, height=self.height, bg="#282A36", borderwidth=2)
-        # sidebar_leg.place(x=150, y=0)
-
-        # self.small_viewport = Canvas(self.root, width=150, height=150, bg=self.background)
-        # self.small_viewport.place(x=0, y=500)
-
-        # sidebar.lift(self.canvas)
-        # sidebar_leg.lift(self.canvas)
-
-        self.viewport = Viewport(root=self.root, width=100, height=self.height, background=self.background)
-        self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
-
-        self.active_draw_mode = None
-        self.canvas.old_coords = None
-
-    # def viewport(self):
-    #     vp = Toplevel(self.root)
+        self.canvas = Canvas(self.root, width=self.width-150, height=self.height, bg=self.background)
 
     def open(self):
         try:
@@ -87,11 +63,9 @@ class Window:
         except Exception as e:
             print("Exception in Window.open: ", e)
 
-
     def mainloop(self):
         try:
             self.open()
-            self.canvas.bind('<ButtonPress-1>', self.click_event)
             mainloop()
             return False
         except Exception as e:
@@ -139,94 +113,4 @@ class Window:
             return self.actions.redo(window=self)
         except Exception as e:
             print("Exception on window.redo: ", e)
-            return True
-
-    def click_event(self, event):
-        try:
-            point = PointGraph(x=event.x, y=event.y, window=self)
-            reduced_point = PointGraph(x=reduce_x(event.x), y=reduce_y(event.y), window=vp)
-            if self.active_draw_mode == "POINT":
-                point.draw(append_action=True)
-                reduced_point.draw(append_action=True)
-                self.canvas.old_coords = None
-            else:
-                if self.canvas.old_coords:
-                    p1 = self.canvas.old_coords
-                    p2 = point
-
-                    reduced_p1 = PointGraph(x=reduce_x(self.canvas.old_coords.x), y=reduce_y(self.canvas.old_coords.y), window=vp)
-                    reduced_p2 = reduced_point
-
-                    if self.active_draw_mode == "LINE":
-
-                        line = LineGraph(p1=p1, p2=p2)
-                        line.draw(window=self, animation=False)
-
-                        reduced_line = LineGraph(p1=reduced_p1, p2=reduced_p2)
-                        reduced_line.draw(window=vp, animation=False)
-
-                        self.canvas.old_coords = None
-
-                    elif self.active_draw_mode == "CIRCLE":
-
-                        line = LineGraph(p1=p1, p2=p2)
-                        circle = CircleGraph(center=p1, radius=line.length)
-                        circle.draw(window=self)
-
-                        reduced_line = LineGraph(p1=reduced_p1, p2=reduced_p2)
-                        reduced_circle = CircleGraph(center=reduced_p1, radius=reduced_line.length)
-                        reduced_circle.draw(window=vp)
-                        self.canvas.old_coords = None
-
-                        print("x original: ", p1.x)
-                        print("y original: ", p1.y)
-                        print("x reduzido: ", reduced_p1.x)
-                        print("y reduzido: ", reduced_p1.y)
-
-                    elif self.active_draw_mode == "RECTANGLE":
-
-                        rectangle = RectangleGraph(p1=p1, p2=p2)
-                        rectangle.draw(window=self)
-
-                        reduced_rectangle = RectangleGraph(p1=reduced_p1, p2=reduced_p2)
-                        reduced_rectangle.draw(window=vp)
-                        self.canvas.old_coords = None
-
-                else:
-                    self.canvas.old_coords = point
-            return False
-        except Exception as e:
-            print("Exception on click_event:", e)
-            return True
-
-    def draw_point(self):
-        try:
-            self.active_draw_mode = "POINT"
-            return False
-        except Exception as e:
-            print("Exception on draw_point:", e)
-            return True
-
-    def draw_line(self):
-        try:
-            self.active_draw_mode = "LINE"
-            return False
-        except Exception as e:
-            print("Exception on draw_line:", e)
-            return True
-
-    def draw_circle(self):
-        try:
-            self.active_draw_mode = "CIRCLE"
-            return False
-        except Exception as e:
-            print("Exception on draw_circle:", e)
-            return True
-
-    def draw_rectangle(self):
-        try:
-            self.active_draw_mode = "RECTANGLE"
-            return False
-        except Exception as e:
-            print("Exception on draw_rectangle:", e)
             return True
