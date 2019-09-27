@@ -4,6 +4,7 @@ from primitives.point_graph import PointGraph
 from primitives.circle_graph import CircleGraph
 from primitives.line_graph import LineGraph
 from primitives.rectangle_graph import RectangleGraph
+from gui.viewport import Viewport
 import sys
 
 # Importante para garantir que funcione em python2 e em python3.
@@ -25,9 +26,7 @@ BTN_CONFIG = {
 
 
 class Window:
-
     def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff", actions=Action()):
-
         self.title = title
         self.width = width
         self.height = height
@@ -55,6 +54,9 @@ class Window:
         self.redo_btn.place(height=25, width=130, x=10, y=185)
 
         self.canvas = Canvas(self.root, width=self.width-150, height=self.height, bg=self.background)
+        self.viewport = Viewport(root=self.root, width=130, height=130, background=self.background)
+        self.viewport.canvas.place(x=10, y=self.height-140)
+
 
         self.active_draw_mode = None
         self.canvas.old_coords = None
