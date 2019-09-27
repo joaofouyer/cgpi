@@ -16,14 +16,12 @@ class PointGraph (Point, object):
     def draw(self, window=None, append_action=False):
         try:
             if append_action:
-                self.window.actions.push(self=self, window=window)
-            self.window.canvas.create_oval(
-                self.x - self.size, self.y - self.size, self.x + self.size, self.y + self.size, fill=self.color,
-                outline=self.color
-            )
+                self.window.actions.push(self=self)
+            self.window.canvas.create_oval(self.x-self.size, self.y-self.size, self.x + self.size, self.y + self.size, fill=self.color, outline=self.color)
+
             vp_x, vp_y = self.window.viewport.reduce(x=self.x, y=self.y, window=self.window)
             self.window.viewport.canvas.create_oval(
-                vp_x - self.size, vp_y - self.size, vp_x + self.size, vp_y + self.size, fill=self.color,
+                vp_x - 1, vp_y - 1, vp_x + 1, vp_y + 1, fill=self.color,
                 outline=self.color
             )
 
