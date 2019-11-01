@@ -19,36 +19,48 @@ def normalize_point(point, window, color):
         return True
 
 
+def clamp(x):
+    return max(0, min(x, 255))
+
+
+def rbg_to_hex(color):
+    try:
+        return "#{0:02x}{1:02x}{2:02x}".format(clamp(color['r']), clamp(color['g']), clamp(color['b']))
+    except Exception as e:
+        print("Exception on rbg_to_hex: ", e)
+        return True
+
+
 def import_json(filename, window):
     try:
         with open(filename) as json_file:
             data = json.load(json_file)
             figure = data.get("figura")
             for r in figure.get("reta"):
-                color = "#000000"
+                color = rbg_to_hex(color=r['cor'])
                 LineGraph(
                     p1=normalize_point(point=r['p1'], window=window, color=color),
                     p2=normalize_point(point=r['p2'], window=window, color=color),
                     color=color
-                ).draw(window=window, action=False)
+                ).draw(window=window, action=True)
 
             for r in figure.get("retangulo"):
-                color = "#000000"
+                color = rbg_to_hex(color=r['cor'])
                 RectangleGraph(
                     p1=normalize_point(point=r['p1'], window=window, color=color),
                     p2=normalize_point(point=r['p2'], window=window, color=color),
                     color=color
-                ).draw(window=window, action=False)
+                ).draw(window=window, action=True)
 
             for polygon in figure.get("poligono"):
                 poligono = PolygonGraph()
                 for p in polygon["ponto"]:
-                    color = "#000000"
+                    color = rbg_to_hex(color=r['cor'])
                     poligono.push(normalize_point(point=p, window=window, color=color))
                 poligono.draw(window=window, multiple_points=True)
 
             for c in figure.get("circulo"):
-                color = "#000000"
+                color = rbg_to_hex(color=r['cor'])
                 center = normalize_point(point=c['ponto'], window=window, color=color)
                 radius = c['raio'] * ((window.canvas_width + window.height) / 2)
                 circle = CircleGraph(center=center, radius=radius)
