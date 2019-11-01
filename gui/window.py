@@ -145,14 +145,30 @@ class Window:
                         self.canvas.old_coords = None
                     elif self.active_draw_mode == "POLYGON":
                         polygon = self.actions.active_polygon
-                        polygon.push(point=p2)
-                        polygon.draw(window=self)
-                        self.canvas.old_coords = p2
+                        first = polygon.points[0]
+                        if first.x - 5 < p2.x < first.x + 5 and first.y - 5 < p2.y < first.y + 5:
+                            self.canvas.create_rectangle(
+                                first.x + 3,
+                                first.y + 3,
+                                first.x - 3,
+                                first.y - 3,
+                                outline=self.background
+                            )
+                            polygon.push(point=first)
+                            polygon.draw(window=self, multiple_points=False)
+                            polygon.points.pop()
+                            self.canvas.old_coords = None
+                        else:
+                            polygon.push(point=p2)
+                            polygon.draw(window=self, multiple_points=False)
+                            self.canvas.old_coords = p2
                 else:
                     self.canvas.old_coords = point
                     if self.active_draw_mode == "POLYGON":
                         self.actions.active_polygon = PolygonGraph()
                         self.actions.active_polygon.push(point)
+                        self.actions.push(self.actions.active_polygon)
+                        self.canvas.create_rectangle(point.x+3, point.y+3, point.x-3, point.y-3)
 
             return False
         except Exception as e:

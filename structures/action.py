@@ -1,5 +1,7 @@
 # coding: utf-8
 
+from primitives.polygon_graph import PolygonGraph
+
 
 class Action:
     def __init__(self):
@@ -30,6 +32,8 @@ class Action:
             action = self.undo_stack.pop()
             if action:
                 action.draw(window=window)
+                if isinstance(action, PolygonGraph):
+                    self.push(action=action)
             window.refresh()
             return action
         except IndexError:
