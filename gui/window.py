@@ -38,19 +38,19 @@ class Window:
         sidebar = Frame(width=(self.width*0.17), height=self.height, bg="#282A36", borderwidth=2)
         sidebar.pack(side=LEFT)
 
-        self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
         self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo", command=self.draw_circle)
         self.rectangle_btn = Button(self.root, BTN_CONFIG, text="Retângulo", command=self.draw_rectangle)
+        self.polygon_btn = Button(self.root, BTN_CONFIG, text="Polígono", command=self.draw_polygon)
         self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED, command=self.undo)
         self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED, command=self.redo)
 
-        self.point_btn.place(height=25, width=(self.width*0.15), x=10, y=10)
-        self.line_btn.place(height=25, width=(self.width*0.15), x=10, y=45)
-        self.circle_btn.place(height=25, width=(self.width*0.15), x=10, y=80)
-        self.rectangle_btn.place(height=25, width=(self.width*0.15), x=10, y=115)
-        self.undo_btn.place(height=25, width=(self.width*0.15), x=10, y=150)
-        self.redo_btn.place(height=25, width=(self.width*0.15), x=10, y=185)
+        self.line_btn.place(height=25, width=(self.width*0.15), x=10, y=10)
+        self.circle_btn.place(height=25, width=(self.width*0.15), x=10, y=40)
+        self.rectangle_btn.place(height=25, width=(self.width*0.15), x=10, y=70)
+        self.polygon_btn.place(height=25, width=(self.width*0.15), x=10, y=100)
+        self.undo_btn.place(height=25, width=(self.width*0.15), x=10, y=130)
+        self.redo_btn.place(height=25, width=(self.width*0.15), x=10, y=160)
         self.canvas_width = self.width - (self.width*0.17)
         self.canvas = Canvas(self.root, width=self.canvas_width, height=self.height, bg=self.background)
         self.viewport = Viewport(root=self.root, width=self.canvas_width * 0.15, height=(self.height*0.15), background=self.background)
@@ -142,7 +142,10 @@ class Window:
                         rectangle = RectangleGraph(p1=p1, p2=p2)
                         rectangle.draw(window=self)
                         self.canvas.old_coords = None
-
+                    elif self.active_draw_mode == "POLYGON":
+                        line = LineGraph(p1=p1, p2=p2)
+                        line.draw(window=self)
+                        self.canvas.old_coords = p2
                 else:
                     self.canvas.old_coords = point
             return False
@@ -180,4 +183,12 @@ class Window:
             return False
         except Exception as e:
             print("Exception on draw_rectangle:", e)
+            return True
+
+    def draw_polygon(self):
+        try:
+            self.active_draw_mode = "POLYGON"
+            return False
+        except Exception as e:
+            print("Exception on draw_polygon:", e)
             return True

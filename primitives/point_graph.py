@@ -17,11 +17,18 @@ class PointGraph (Point, object):
         try:
             if append_action:
                 self.window.actions.push(self=self)
-            self.window.canvas.create_oval(self.x-self.size, self.y-self.size, self.x + self.size, self.y + self.size, fill=self.color, outline=self.color)
+            self.window.canvas.create_oval(
+                self.x-self.size,
+                self.y-self.size,
+                self.x,
+                self.y,
+                fill=self.color,
+                outline=self.color
+            )
 
             vp_x, vp_y = self.window.viewport.reduce(x=self.x, y=self.y, window=self.window)
             self.window.viewport.canvas.create_oval(
-                vp_x - 1, vp_y - 1, vp_x + 1, vp_y + 1, fill=self.color,
+                vp_x - 1, vp_y - 1, vp_x, vp_y, fill=self.color,
                 outline=self.color
             )
 
