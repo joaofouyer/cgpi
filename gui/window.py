@@ -4,6 +4,7 @@ from primitives.point_graph import PointGraph
 from primitives.circle_graph import CircleGraph
 from primitives.line_graph import LineGraph
 from primitives.rectangle_graph import RectangleGraph
+from primitives.polygon_graph import PolygonGraph
 from gui.viewport import Viewport
 import sys
 
@@ -38,19 +39,19 @@ class Window:
         sidebar = Frame(width=(self.width*0.17), height=self.height, bg="#282A36", borderwidth=2)
         sidebar.pack(side=LEFT)
 
-        self.point_btn = Button(self.root, BTN_CONFIG, text="Ponto", command=self.draw_point)
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
         self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo", command=self.draw_circle)
         self.rectangle_btn = Button(self.root, BTN_CONFIG, text="Retângulo", command=self.draw_rectangle)
+        self.polygon_btn = Button(self.root, BTN_CONFIG, text="Polígono", command=self.draw_polygon)
         self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED, command=self.undo)
         self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED, command=self.redo)
 
-        self.point_btn.place(height=25, width=(self.width*0.15), x=10, y=10)
-        self.line_btn.place(height=25, width=(self.width*0.15), x=10, y=45)
-        self.circle_btn.place(height=25, width=(self.width*0.15), x=10, y=80)
-        self.rectangle_btn.place(height=25, width=(self.width*0.15), x=10, y=115)
-        self.undo_btn.place(height=25, width=(self.width*0.15), x=10, y=150)
-        self.redo_btn.place(height=25, width=(self.width*0.15), x=10, y=185)
+        self.line_btn.place(height=25, width=(self.width*0.15), x=10, y=10)
+        self.circle_btn.place(height=25, width=(self.width*0.15), x=10, y=40)
+        self.rectangle_btn.place(height=25, width=(self.width*0.15), x=10, y=70)
+        self.polygon_btn.place(height=25, width=(self.width*0.15), x=10, y=100)
+        self.undo_btn.place(height=25, width=(self.width*0.15), x=10, y=130)
+        self.redo_btn.place(height=25, width=(self.width*0.15), x=10, y=160)
         self.canvas_width = self.width - (self.width*0.17)
         self.canvas = Canvas(self.root, width=self.canvas_width, height=self.height, bg=self.background)
         self.viewport = Viewport(root=self.root, width=self.canvas_width * 0.15, height=(self.height*0.15), background=self.background)
@@ -142,9 +143,33 @@ class Window:
                         rectangle = RectangleGraph(p1=p1, p2=p2)
                         rectangle.draw(window=self)
                         self.canvas.old_coords = None
-
+                    elif self.active_draw_mode == "POLYGON":
+                        polygon = self.actions.active_polygon
+                        first = polygon.points[0]
+                        if first.x - 5 < p2.x < first.x + 5 and first.y - 5 < p2.y < first.y + 5:
+                            self.canvas.create_rectangle(
+                                first.x + 3,
+                                first.y + 3,
+                                first.x - 3,
+                                first.y - 3,
+                                outline=self.background
+                            )
+                            polygon.push(point=first)
+                            polygon.draw(window=self, multiple_points=False)
+                            polygon.points.pop()
+                            self.canvas.old_coords = None
+                        else:
+                            polygon.push(point=p2)
+                            polygon.draw(window=self, multiple_points=False)
+                            self.canvas.old_coords = p2
                 else:
                     self.canvas.old_coords = point
+                    if self.active_draw_mode == "POLYGON":
+                        self.actions.active_polygon = PolygonGraph()
+                        self.actions.active_polygon.push(point)
+                        self.actions.push(self.actions.active_polygon)
+                        self.canvas.create_rectangle(point.x+3, point.y+3, point.x-3, point.y-3)
+
             return False
         except Exception as e:
             print("Exception on click_event:", e)
@@ -153,6 +178,7 @@ class Window:
     def draw_point(self):
         try:
             self.active_draw_mode = "POINT"
+            self.canvas.old_coords = None
             return False
         except Exception as e:
             print("Exception on draw_point:", e)
@@ -161,6 +187,7 @@ class Window:
     def draw_line(self):
         try:
             self.active_draw_mode = "LINE"
+            self.canvas.old_coords = None
             return False
         except Exception as e:
             print("Exception on draw_line:", e)
@@ -169,6 +196,7 @@ class Window:
     def draw_circle(self):
         try:
             self.active_draw_mode = "CIRCLE"
+            self.canvas.old_coords = None
             return False
         except Exception as e:
             print("Exception on draw_circle:", e)
@@ -177,7 +205,17 @@ class Window:
     def draw_rectangle(self):
         try:
             self.active_draw_mode = "RECTANGLE"
+            self.canvas.old_coords = None
             return False
         except Exception as e:
             print("Exception on draw_rectangle:", e)
+            return True
+
+    def draw_polygon(self):
+        try:
+            self.active_draw_mode = "POLYGON"
+            self.canvas.old_coords = None
+            return False
+        except Exception as e:
+            print("Exception on draw_polygon:", e)
             return True
