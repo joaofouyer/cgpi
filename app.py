@@ -5,7 +5,7 @@ from structures.action import Action
 
 def main():
     try:
-        w = Window(title="Testando Desfazer Ações", width=300, height=600, background="white", actions=Action())
+        w = Window(title="PUC-SP", width=600, height=600, background="white", actions=Action())
         w.mainloop()
         return False
 

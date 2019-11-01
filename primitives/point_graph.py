@@ -27,10 +27,25 @@ class PointGraph (Point, object):
             )
 
             vp_x, vp_y = self.window.viewport.reduce(x=self.x, y=self.y, window=self.window)
+
             self.window.viewport.canvas.create_oval(
                 vp_x - 1, vp_y - 1, vp_x, vp_y, fill=self.color,
                 outline=self.color
             )
+
+            if self.window.clipping:
+                if self.window.clipping.min_x < self.x < self.window.clipping.max_x and \
+                        self.window.clipping.min_y < self.y < self.window.clipping.max_y:
+                    x = round(self.x / self.window.canvas_width * self.window.clipping.width)
+                    y = round(self.y / self.window.height * self.window.clipping.height)
+                    self.window.clipping.canvas.create_oval(
+                        x - self.size,
+                        y - self.size,
+                        x,
+                        y,
+                        fill=self.color,
+                        outline=self.color
+                    )
 
             if window:
                 window.refresh()

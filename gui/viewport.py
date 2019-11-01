@@ -15,7 +15,6 @@ class Viewport:
         self.width = width
         self.height = height
         self.background = background
-        self.root = root
         self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
 
     def reduce(self, x, y, window):
