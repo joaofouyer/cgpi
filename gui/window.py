@@ -4,6 +4,7 @@ from primitives.point_graph import PointGraph
 from primitives.circle_graph import CircleGraph
 from primitives.line_graph import LineGraph
 from primitives.rectangle_graph import RectangleGraph
+from primitives.polygon_graph import PolygonGraph
 from gui.viewport import Viewport
 import sys
 
@@ -143,11 +144,16 @@ class Window:
                         rectangle.draw(window=self)
                         self.canvas.old_coords = None
                     elif self.active_draw_mode == "POLYGON":
-                        line = LineGraph(p1=p1, p2=p2)
-                        line.draw(window=self)
+                        polygon = self.actions.active_polygon
+                        polygon.push(point=p2)
+                        polygon.draw(window=self)
                         self.canvas.old_coords = p2
                 else:
                     self.canvas.old_coords = point
+                    if self.active_draw_mode == "POLYGON":
+                        self.actions.active_polygon = PolygonGraph()
+                        self.actions.active_polygon.push(point)
+
             return False
         except Exception as e:
             print("Exception on click_event:", e)
@@ -156,6 +162,7 @@ class Window:
     def draw_point(self):
         try:
             self.active_draw_mode = "POINT"
+            self.canvas.old_coords = None
             return False
         except Exception as e:
             print("Exception on draw_point:", e)
@@ -164,6 +171,7 @@ class Window:
     def draw_line(self):
         try:
             self.active_draw_mode = "LINE"
+            self.canvas.old_coords = None
             return False
         except Exception as e:
             print("Exception on draw_line:", e)
@@ -172,6 +180,7 @@ class Window:
     def draw_circle(self):
         try:
             self.active_draw_mode = "CIRCLE"
+            self.canvas.old_coords = None
             return False
         except Exception as e:
             print("Exception on draw_circle:", e)
@@ -180,6 +189,7 @@ class Window:
     def draw_rectangle(self):
         try:
             self.active_draw_mode = "RECTANGLE"
+            self.canvas.old_coords = None
             return False
         except Exception as e:
             print("Exception on draw_rectangle:", e)
@@ -188,6 +198,7 @@ class Window:
     def draw_polygon(self):
         try:
             self.active_draw_mode = "POLYGON"
+            self.canvas.old_coords = None
             return False
         except Exception as e:
             print("Exception on draw_polygon:", e)

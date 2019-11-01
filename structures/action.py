@@ -5,6 +5,7 @@ class Action:
     def __init__(self):
         self.actions_stack = []
         self.undo_stack = []
+        self.active_polygon = None
 
     def push(self, action):
         try:
