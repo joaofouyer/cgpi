@@ -1,5 +1,7 @@
 # coding: utf-8
 from structures.action import Action
+from structures.import_file import import_json
+from structures.export_file import export_json
 from primitives.point_graph import PointGraph
 from primitives.circle_graph import CircleGraph
 from primitives.line_graph import LineGraph
@@ -7,13 +9,17 @@ from primitives.rectangle_graph import RectangleGraph
 from primitives.polygon_graph import PolygonGraph
 from gui.viewport import Viewport
 import sys
+import os
 
 # Importante para garantir que funcione em python2 e em python3.
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 if sys.version_info[0] < 3:
-    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
+    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, Tkinter, Tkconstants,\
+        tkFileDialog
 else:
-    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
+    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, filedialog
 
 BTN_CONFIG = {
     "activebackground": "#6272A4",
@@ -35,8 +41,8 @@ class Window:
         self.root = Tk()
         self.root.title(self.title)
         self.actions = actions
-
-        sidebar = Frame(width=(self.width*0.17), height=self.height, bg="#282A36", borderwidth=2)
+        self.root.resizable(width=False, height=False)
+        sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
         sidebar.pack(side=LEFT)
 
         self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
@@ -45,17 +51,27 @@ class Window:
         self.polygon_btn = Button(self.root, BTN_CONFIG, text="Polígono", command=self.draw_polygon)
         self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED, command=self.undo)
         self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED, command=self.redo)
+        self.import_btn = Button(self.root, BTN_CONFIG, text="Importar", state="normal", command=self.import_file)
+        self.export_btn = Button(self.root, BTN_CONFIG, text="Exportar", state=DISABLED, command=self.export_file)
 
-        self.line_btn.place(height=25, width=(self.width*0.15), x=10, y=10)
-        self.circle_btn.place(height=25, width=(self.width*0.15), x=10, y=40)
-        self.rectangle_btn.place(height=25, width=(self.width*0.15), x=10, y=70)
-        self.polygon_btn.place(height=25, width=(self.width*0.15), x=10, y=100)
-        self.undo_btn.place(height=25, width=(self.width*0.15), x=10, y=130)
-        self.redo_btn.place(height=25, width=(self.width*0.15), x=10, y=160)
-        self.canvas_width = self.width - (self.width*0.17)
+        self.line_btn.place(height=20, width=130, x=10, y=10)
+        self.circle_btn.place(height=20, width=130, x=10, y=40)
+        self.rectangle_btn.place(height=20, width=130, x=10, y=70)
+        self.polygon_btn.place(height=20, width=130, x=10, y=100)
+        self.undo_btn.place(height=20, width=130, x=10, y=130)
+        self.redo_btn.place(height=20, width=130, x=10, y=160)
+        self.import_btn.place(height=20, width=130, x=10, y=190)
+        self.export_btn.place(height=20, width=130, x=10, y=220)
+
+        self.canvas_width = self.width
         self.canvas = Canvas(self.root, width=self.canvas_width, height=self.height, bg=self.background)
-        self.viewport = Viewport(root=self.root, width=self.canvas_width * 0.15, height=(self.height*0.15), background=self.background)
-        self.viewport.canvas.place(x=10, y=(self.height - self.height*0.17))
+        self.viewport = Viewport(
+            root=self.root,
+            width=140,
+            height=(self.height*0.15),
+            background=self.background
+        )
+        self.viewport.canvas.place(x=5, y=(self.height - self.height*0.17))
 
         self.active_draw_mode = None
         self.canvas.old_coords = None
@@ -219,4 +235,23 @@ class Window:
             return False
         except Exception as e:
             print("Exception on draw_polygon:", e)
+            return True
+
+    def import_file(self):
+        try:
+            filename = filedialog.askopenfilename(
+                initialdir=BASE_DIR, title="Selecione o aquivo JSON.",
+                filetypes=(("Arquivos JSON", "*.json"), ("todos os arquivos", "*.*"))
+            )
+            import_json(filename=filename, window=self)
+            return False
+        except Exception as e:
+            print("Exception on import_file:", e)
+            return True
+
+    def export_file(self):
+        try:
+            export_json()
+        except Exception as e:
+            print("Exception on export_file:", e)
             return True
