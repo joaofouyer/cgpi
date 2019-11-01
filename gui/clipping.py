@@ -3,9 +3,9 @@ import sys
 # Importante para garantir que funcione em python2 e em python3.
 
 if sys.version_info[0] < 3:
-    from Tkinter import Tk, Canvas, Toplevel
+    from Tkinter import Tk, Canvas, Toplevel, YES, BOTH
 else:
-    from tkinter import Tk, Canvas, Toplevel
+    from tkinter import Tk, Canvas, Toplevel, YES, BOTH
 
 
 class Clipping:
@@ -27,15 +27,17 @@ class Clipping:
 
             self.width = self.max_x - self.min_x
             self.height = self.max_y - self.min_y
+            self.top_margin = min_y
+            self.left_margin = min_x
             self.background = background
-            self.canvas = Canvas(self.root, width=self.width, height=self.height, bg=self.background)
+            top_level = Toplevel(
+                self.root,
+                height=self.height,
+                width=self.width,
+                background=self.background
+            )
+            self.canvas = Canvas(top_level, width=self.width, height=self.height, bg=self.background)
+            self.canvas.pack(expand=YES, fill=BOTH)
         except Exception as e:
             print("Exception on clipping constructor: {} {}".format(type(e), e))
-            raise e
-
-    def open(self):
-        try:
-            clipping = Toplevel(self.root, height=self.height, width=self.width, background=self.background)
-        except Exception as e:
-            print("Exception on open_clipping: {} {}".format(type(e), e))
             raise e

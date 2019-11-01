@@ -76,15 +76,8 @@ class Window:
                 background=self.background
             )
             self.viewport.canvas.place(x=5, y=(self.height - self.height*0.17))
-            self.clipping = Clipping(
-                root=self.root,
-                min_x=0,
-                min_y=0,
-                max_x=self.canvas_width,
-                max_y=self.height,
-                background=background
-            )
-            self.clipping.open()
+            self.clipping = None
+            self.clipping_canvas = None
             self.active_draw_mode = None
             self.canvas.old_coords = None
         except Exception as e:
@@ -229,7 +222,6 @@ class Window:
                             max_y=p2.y,
                             background=self.background
                         )
-                        self.clipping.open()
 
                 else:
                     self.canvas.old_coords = point
