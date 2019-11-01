@@ -44,20 +44,31 @@ def export_json(window):
             }
         }
         for f in window.actions.actions_stack:
-            print(type(f))
             color = hex_to_rgb(f.color)
             if isinstance(f, RectangleGraph):
                 p1 = point_to_json(point=f.p1, width=window.canvas_width, height=window.height)
                 p2 = point_to_json(point=f.p2, width=window.canvas_width, height=window.height)
-                dict['figura']['retangulo'].append({"p1": p1, "p2": p2, "color": color})
+                dict['figura']['retangulo'].append({"p1": p1, "p2": p2, "cor": color})
             elif isinstance(f, PolygonGraph):
-                pass
+                points = []
+                first = False
+                for p in f.points:
+                    point = point_to_json(point=p, width=window.canvas_width, height=window.height)
+                    points.append(point)
+                    if not first:
+                        first = point
+                    else:
+                        points.append(point)
+                points.append(first)
+                dict['figura']['poligono'].append({"ponto": points, "cor": color})
             elif isinstance(f, CircleGraph):
-                pass
+                center = point_to_json(point=f.center, width=window.canvas_width, height=window.height)
+                radius = f.radius / ((window.canvas_width + window.height) / 2)
+                dict['figura']['circulo'].append({"ponto": center, "raio": radius, "cor": color})
             elif isinstance(f, LineGraph):
                 p1 = point_to_json(point=f.p1, width=window.canvas_width, height=window.height)
                 p2 = point_to_json(point=f.p2, width=window.canvas_width, height=window.height)
-                dict['figura']['reta'].append({"p1": p1, "p2": p2, "color": color})
+                dict['figura']['reta'].append({"p1": p1, "p2": p2, "cor": color})
             else:
                 print("Figura não suportada!")
         with open('export.json', 'w') as exportfile:
