@@ -147,6 +147,7 @@ class Window:
                         polygon = self.actions.active_polygon
                         first = polygon.points[0]
                         if first.x - 5 < p2.x < first.x + 5 and first.y - 5 < p2.y < first.y + 5:
+                            self.actions.push(polygon)
                             self.canvas.create_rectangle(
                                 first.x + 3,
                                 first.y + 3,
@@ -158,6 +159,7 @@ class Window:
                             polygon.draw(window=self, multiple_points=False)
                             polygon.points.pop()
                             self.canvas.old_coords = None
+
                         else:
                             polygon.push(point=p2)
                             polygon.draw(window=self, multiple_points=False)
@@ -167,7 +169,6 @@ class Window:
                     if self.active_draw_mode == "POLYGON":
                         self.actions.active_polygon = PolygonGraph()
                         self.actions.active_polygon.push(point)
-                        self.actions.push(self.actions.active_polygon)
                         self.canvas.create_rectangle(point.x+3, point.y+3, point.x-3, point.y-3)
 
             return False
