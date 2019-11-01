@@ -81,7 +81,8 @@ class Window:
             self.refresh()
             return self.canvas.pack(side=RIGHT)
         except Exception as e:
-            print("Exception in Window.open: ", e)
+            print("Exception on open window: {} {}".format(type(e), e))
+            raise e
 
     def mainloop(self):
         try:
@@ -90,51 +91,56 @@ class Window:
             mainloop()
             return False
         except Exception as e:
-            print('mainloop: ', e)
+            print("Exception on mainloop: {} {}".format(type(e), e))
+            raise e
 
     def update_undo_btn_state(self):
         try:
             if len(self.actions.actions_stack):
                 self.undo_btn.config(state="normal")
+                self.export_btn.config(state="normal")
             else:
                 self.undo_btn.config(state="disabled")
+                self.export_btn.config(state="disabled")
             return False
         except Exception as e:
-            print("Exception on update_undo_btn_state: ", e)
-            return True
+            print("Exception on update undo btn state: {} {}".format(type(e), e))
+            raise e
 
     def update_redo_btn_state(self):
         try:
             if len(self.actions.undo_stack):
+
                 self.redo_btn.config(state="normal")
             else:
+
                 self.redo_btn.config(state="disabled")
             return False
         except Exception as e:
-            print("Exception on update_redo_btn_state: ", e)
-            return True
+            print("Exception on update redo btn state: {} {}".format(type(e), e))
+            raise e
 
     def refresh(self):
         try:
             self.update_redo_btn_state()
             self.update_undo_btn_state()
         except Exception as e:
-            print("Exception on refresh: ", e)
-            return True
+            print("Exception on refresh: {} {}".format(type(e), e))
+            raise e
 
     def undo(self):
         try:
             return self.actions.undo(window=self)
         except Exception as e:
-            print("Exception on window.undo: ", e)
-            return True
+            print("Exception on undo: {} {}".format(type(e), e))
+            raise e
 
     def redo(self):
         try:
             return self.actions.redo(window=self)
         except Exception as e:
-            print("Exception on window.redo: ", e)
-            return True
+            print("Exception on redo: {} {}".format(type(e), e))
+            raise e
 
     def click_event(self, event):
         try:
@@ -189,8 +195,8 @@ class Window:
 
             return False
         except Exception as e:
-            print("Exception on click_event:", e)
-            return True
+            print("Exception on click event: {} {}".format(type(e), e))
+            raise e
 
     def draw_point(self):
         try:
@@ -198,8 +204,8 @@ class Window:
             self.canvas.old_coords = None
             return False
         except Exception as e:
-            print("Exception on draw_point:", e)
-            return True
+            print("Exception on draw point: {} {}".format(type(e), e))
+            raise e
 
     def draw_line(self):
         try:
@@ -207,8 +213,8 @@ class Window:
             self.canvas.old_coords = None
             return False
         except Exception as e:
-            print("Exception on draw_line:", e)
-            return True
+            print("Exception on draw line: {} {}".format(type(e), e))
+            raise e
 
     def draw_circle(self):
         try:
@@ -216,8 +222,8 @@ class Window:
             self.canvas.old_coords = None
             return False
         except Exception as e:
-            print("Exception on draw_circle:", e)
-            return True
+            print("Exception on draw circle: {} {}".format(type(e), e))
+            raise e
 
     def draw_rectangle(self):
         try:
@@ -225,8 +231,8 @@ class Window:
             self.canvas.old_coords = None
             return False
         except Exception as e:
-            print("Exception on draw_rectangle:", e)
-            return True
+            print("Exception on draw rectangle: {} {}".format(type(e), e))
+            raise e
 
     def draw_polygon(self):
         try:
@@ -234,8 +240,8 @@ class Window:
             self.canvas.old_coords = None
             return False
         except Exception as e:
-            print("Exception on draw_polygon:", e)
-            return True
+            print("Exception on draw polygon: {} {}".format(type(e), e))
+            raise e
 
     def import_file(self):
         try:
@@ -246,12 +252,12 @@ class Window:
             import_json(filename=filename, window=self)
             return False
         except Exception as e:
-            print("Exception on import_file:", e)
-            return True
+            print("Exception on import_file: {} {}".format(type(e), e))
+            raise e
 
     def export_file(self):
         try:
-            export_json()
+            export_json(window=self)
         except Exception as e:
-            print("Exception on export_file:", e)
-            return True
+            print("Exception on export_file: {} {}".format(type(e), e))
+            raise e

@@ -15,8 +15,8 @@ def normalize_point(point, window, color):
             color=color
         )
     except Exception as e:
-        print("Exception on import_file:", e)
-        return True
+        print("Exception on normalize point: {} {}".format(type(e), e))
+        raise e
 
 
 def clamp(x):
@@ -27,8 +27,8 @@ def rbg_to_hex(color):
     try:
         return "#{0:02x}{1:02x}{2:02x}".format(clamp(color['r']), clamp(color['g']), clamp(color['b']))
     except Exception as e:
-        print("Exception on rbg_to_hex: ", e)
-        return True
+        print("Exception on rbg_to_hex: {} {}".format(type(e), e))
+        raise e
 
 
 def import_json(filename, window):
@@ -64,9 +64,9 @@ def import_json(filename, window):
                 center = normalize_point(point=c['ponto'], window=window, color=color)
                 radius = c['raio'] * ((window.canvas_width + window.height) / 2)
                 circle = CircleGraph(center=center, radius=radius)
-                circle.draw(window=window, action=False)
+                circle.draw(window=window, action=True)
 
         return False
     except Exception as e:
-        print("Exception on import_file:", e)
-        return True
+        print("Exception on import json: {} {}".format(type(e), e))
+        raise e
