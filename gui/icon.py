@@ -24,6 +24,9 @@ class Icon:
             self.redo = PhotoImage(file=r"{}/static/icon/redo.png".format(BASE_DIR)).subsample(2)
             self.square = PhotoImage(file=r"{}/static/icon/square.png".format(BASE_DIR)).subsample(2)
             self.undo = PhotoImage(file=r"{}/static/icon/undo.png".format(BASE_DIR)).subsample(2)
+            self.color = PhotoImage(file=r"{}/static/icon/color.png".format(BASE_DIR)).subsample(2)
+            self.erase = PhotoImage(file=r"{}/static/icon/erase.png".format(BASE_DIR)).subsample(2)
+
         except Exception as e:
             print("Exception on icon constructor: {} {}".format(type(e), e))
             raise e

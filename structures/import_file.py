@@ -53,17 +53,17 @@ def import_json(filename, window):
                 ).draw(window=window, action=True)
 
             for polygon in figure.get("poligono"):
-                poligono = PolygonGraph()
+                color = rbg_to_hex(color=polygon['cor'])
+                poligono = PolygonGraph(color=color)
                 for p in polygon["ponto"]:
-                    color = rbg_to_hex(color=r['cor'])
                     poligono.push(normalize_point(point=p, window=window, color=color))
                 poligono.draw(window=window, multiple_points=True)
 
             for c in figure.get("circulo"):
-                color = rbg_to_hex(color=r['cor'])
+                color = rbg_to_hex(color=c['cor'])
                 center = normalize_point(point=c['ponto'], window=window, color=color)
                 radius = c['raio'] * ((window.canvas_width + window.height) / 2)
-                circle = CircleGraph(center=center, radius=radius)
+                circle = CircleGraph(center=center, radius=radius, color=color)
                 circle.draw(window=window, action=True)
 
         return False
