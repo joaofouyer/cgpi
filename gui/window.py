@@ -1,6 +1,8 @@
 # coding: utf-8
+from gui.button import SidebarButton
 from gui.clipping import Clipping
 from gui.icon import Icon
+from gui.sidebar import Sidebar
 from structures.action import Action
 from structures.import_file import import_json
 from structures.export_file import export_json
@@ -18,24 +20,27 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 if sys.version_info[0] < 3:
-    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, PhotoImage, CENTER
+    from Tkinter import Tk, Canvas, mainloop, RIGHT
 else:
-    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, filedialog, PhotoImage, CENTER
-
-BTN_CONFIG = {
-    "border": "0",
-    "activebackground": "#6272A4",
-    "background": "#E5E8E8",
-    "bd": 0,
-    "foreground": "#5B5B63",
-    "activeforeground": "#FFFFFF",
-    "font": "Bold",
-}
+    from tkinter import Tk, Canvas, mainloop, RIGHT, filedialog
 
 
 class Window:
+
     def __init__(self, title="PUC-SP", width=500, height=500, background="#ffffff", actions=Action()):
         try:
+            commands = {
+                "draw_line": self.draw_line,
+                "draw_circle": self.draw_circle,
+                "draw_rectangle": self.draw_rectangle,
+                "draw_polygon": self.draw_polygon,
+                "undo": self.undo,
+                "redo": self.redo,
+                "import_file": self.import_file,
+                "export_file": self.export_file,
+                "set_clipping_area": self.set_clipping_area
+            }
+
             self.title = title
             self.width = width
             self.height = height
@@ -43,45 +48,19 @@ class Window:
             self.root = Tk()
             self.root.title(self.title)
             self.root.resizable(width=False, height=False)
-            self.icon = Icon()
-            self.actions = actions
-
-            sidebar = Frame(width=150, height=self.height, bg="#E5E8E8", borderwidth=2)
-            sidebar.pack(side=LEFT)
-
-            self.line_btn = Button(self.root, BTN_CONFIG, image=self.icon.line, command=self.draw_line)
-            self.circle_btn = Button(self.root, BTN_CONFIG, image=self.icon.circle, anchor=CENTER, command=self.draw_circle)
-            self.rectangle_btn = Button(self.root, BTN_CONFIG, image=self.icon.square, command=self.draw_rectangle)
-            self.polygon_btn = Button(self.root, BTN_CONFIG, image=self.icon.polygon, command=self.draw_polygon)
-            self.undo_btn = Button(self.root, BTN_CONFIG, image=self.icon.undo, state=DISABLED, command=self.undo)
-            self.redo_btn = Button(self.root, BTN_CONFIG, image=self.icon.redo, state=DISABLED, command=self.redo)
-            self.import_btn = Button(self.root, BTN_CONFIG, image=self.icon.import_file, command=self.import_file)
-            self.export_btn = Button(self.root, BTN_CONFIG, image=self.icon.export, state=DISABLED, command=self.export_file)
-            self.clipping_btn = Button(self.root, BTN_CONFIG, image=self.icon.clipping, command=self.set_clipping_area)
-
-            self.line_btn.place(height=40, width=40, x=25, y=10)
-            self.circle_btn.place(height=40, width=40, x=90, y=10)
-            self.rectangle_btn.place(height=40, width=40, x=25, y=60)
-            self.polygon_btn.place(height=40, width=40, x=90, y=60)
-            self.undo_btn.place(height=40, width=40, x=25, y=110)
-            self.redo_btn.place(height=40, width=40, x=90, y=110)
-            self.import_btn.place(height=40, width=40, x=25, y=160)
-            self.export_btn.place(height=40, width=40, x=90, y=160)
-            self.clipping_btn.place(height=40, width=40, x=25, y=210)
-
             self.canvas_width = self.width
             self.canvas = Canvas(self.root, width=self.canvas_width, height=self.height, bg=self.background)
-            self.viewport = Viewport(
-                root=self.root,
-                width=140,
-                height=(self.height*0.15),
-                background=self.background
-            )
+            self.icon = Icon()
+            self.actions = actions
+            self.sidebar = Sidebar(height=self.height)
+            self.btn = SidebarButton(root=self.root, icons=self.icon, commands=commands)
+            self.viewport = Viewport(root=self.root, width=140, height=(self.height*0.15), background=self.background)
             self.viewport.canvas.place(x=5, y=(self.height - self.height*0.17))
             self.clipping = None
             self.clipping_canvas = None
             self.active_draw_mode = None
             self.canvas.old_coords = None
+
         except Exception as e:
             print("Exception on window constructor: {} {}".format(type(e), e))
             raise e
@@ -107,28 +86,19 @@ class Window:
     def update_undo_btn_state(self):
         try:
             if len(self.actions.actions_stack):
-                self.undo_btn.config(state="normal")
-                self.export_btn.config(state="normal")
+                self.btn.undo.config(state="normal")
+                self.btn.export.config(state="normal")
             else:
-                self.undo_btn.config(state="disabled")
-                self.export_btn.config(state="disabled")
+                self.btn.undo.config(state="disabled")
+                self.btn.export.config(state="disabled")
             return False
         except Exception as e:
             print("Exception on update undo btn state: {} {}".format(type(e), e))
             raise e
 
     def update_redo_btn_state(self):
-        try:
-            if len(self.actions.undo_stack):
-
-                self.redo_btn.config(state="normal")
-            else:
-
-                self.redo_btn.config(state="disabled")
-            return False
-        except Exception as e:
-            print("Exception on update redo btn state: {} {}".format(type(e), e))
-            raise e
+        self.btn.redo.config(state="normal") if len(self.actions.undo_stack) else self.btn.redo.config(state="disabled")
+        return False
 
     def refresh(self):
         try:
@@ -311,12 +281,4 @@ class Window:
             return False
         except Exception as e:
             print("Exception on set_clipping_area: {} {}".format(type(e), e))
-            raise e
-
-    def set_sidebar(self, photo):
-        try:
-            print(photo)
-            self.circle_btn.configure(image=photo)
-        except Exception as e:
-            print("Exception on set_sidebar: {} {}".format(type(e), e))
             raise e
