@@ -1,5 +1,6 @@
 # coding: utf-8
 from gui.clipping import Clipping
+from gui.icon import Icon
 from structures.action import Action
 from structures.import_file import import_json
 from structures.export_file import export_json
@@ -17,19 +18,18 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 if sys.version_info[0] < 3:
-    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, Tkinter, Tkconstants,\
-        tkFileDialog, Toplevel
+    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, PhotoImage, CENTER
 else:
-    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, filedialog, Toplevel
+    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, filedialog, PhotoImage, CENTER
 
 BTN_CONFIG = {
+    "border": "0",
     "activebackground": "#6272A4",
-    "background": "#44475A",
+    "background": "#E5E8E8",
     "bd": 0,
-    "foreground": "#FFFFFF",
+    "foreground": "#5B5B63",
     "activeforeground": "#FFFFFF",
     "font": "Bold",
-    "relief": SUNKEN
 }
 
 
@@ -42,30 +42,32 @@ class Window:
             self.background = background
             self.root = Tk()
             self.root.title(self.title)
-            self.actions = actions
             self.root.resizable(width=False, height=False)
-            sidebar = Frame(width=150, height=self.height, bg="#282A36", borderwidth=2)
+            self.icon = Icon()
+            self.actions = actions
+
+            sidebar = Frame(width=150, height=self.height, bg="#E5E8E8", borderwidth=2)
             sidebar.pack(side=LEFT)
 
-            self.line_btn = Button(self.root, BTN_CONFIG, text="Reta", command=self.draw_line)
-            self.circle_btn = Button(self.root, BTN_CONFIG, text="Círculo", command=self.draw_circle)
-            self.rectangle_btn = Button(self.root, BTN_CONFIG, text="Retângulo", command=self.draw_rectangle)
-            self.polygon_btn = Button(self.root, BTN_CONFIG, text="Polígono", command=self.draw_polygon)
-            self.undo_btn = Button(self.root, BTN_CONFIG, text="Desfazer", state=DISABLED, command=self.undo)
-            self.redo_btn = Button(self.root, BTN_CONFIG, text="Refazer", state=DISABLED, command=self.redo)
-            self.import_btn = Button(self.root, BTN_CONFIG, text="Importar", state="normal", command=self.import_file)
-            self.export_btn = Button(self.root, BTN_CONFIG, text="Exportar", state=DISABLED, command=self.export_file)
-            self.clipping_btn = Button(self.root, BTN_CONFIG, text="Clipping", command=self.set_clipping_area)
+            self.line_btn = Button(self.root, BTN_CONFIG, image=self.icon.line, command=self.draw_line)
+            self.circle_btn = Button(self.root, BTN_CONFIG, image=self.icon.circle, anchor=CENTER, command=self.draw_circle)
+            self.rectangle_btn = Button(self.root, BTN_CONFIG, image=self.icon.square, command=self.draw_rectangle)
+            self.polygon_btn = Button(self.root, BTN_CONFIG, image=self.icon.polygon, command=self.draw_polygon)
+            self.undo_btn = Button(self.root, BTN_CONFIG, image=self.icon.undo, state=DISABLED, command=self.undo)
+            self.redo_btn = Button(self.root, BTN_CONFIG, image=self.icon.redo, state=DISABLED, command=self.redo)
+            self.import_btn = Button(self.root, BTN_CONFIG, image=self.icon.import_file, command=self.import_file)
+            self.export_btn = Button(self.root, BTN_CONFIG, image=self.icon.export, state=DISABLED, command=self.export_file)
+            self.clipping_btn = Button(self.root, BTN_CONFIG, image=self.icon.clipping, command=self.set_clipping_area)
 
-            self.line_btn.place(height=20, width=130, x=10, y=10)
-            self.circle_btn.place(height=20, width=130, x=10, y=40)
-            self.rectangle_btn.place(height=20, width=130, x=10, y=70)
-            self.polygon_btn.place(height=20, width=130, x=10, y=100)
-            self.undo_btn.place(height=20, width=130, x=10, y=130)
-            self.redo_btn.place(height=20, width=130, x=10, y=160)
-            self.import_btn.place(height=20, width=130, x=10, y=190)
-            self.export_btn.place(height=20, width=130, x=10, y=220)
-            self.clipping_btn.place(height=20, width=130, x=10, y=250)
+            self.line_btn.place(height=40, width=40, x=25, y=10)
+            self.circle_btn.place(height=40, width=40, x=90, y=10)
+            self.rectangle_btn.place(height=40, width=40, x=25, y=60)
+            self.polygon_btn.place(height=40, width=40, x=90, y=60)
+            self.undo_btn.place(height=40, width=40, x=25, y=110)
+            self.redo_btn.place(height=40, width=40, x=90, y=110)
+            self.import_btn.place(height=40, width=40, x=25, y=160)
+            self.export_btn.place(height=40, width=40, x=90, y=160)
+            self.clipping_btn.place(height=40, width=40, x=25, y=210)
 
             self.canvas_width = self.width
             self.canvas = Canvas(self.root, width=self.canvas_width, height=self.height, bg=self.background)
@@ -311,3 +313,10 @@ class Window:
             print("Exception on set_clipping_area: {} {}".format(type(e), e))
             raise e
 
+    def set_sidebar(self, photo):
+        try:
+            print(photo)
+            self.circle_btn.configure(image=photo)
+        except Exception as e:
+            print("Exception on set_sidebar: {} {}".format(type(e), e))
+            raise e

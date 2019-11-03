@@ -1,7 +1,14 @@
 # coding: utf-8
 from gui.window import Window
 from structures.action import Action
+import os, sys
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+if sys.version_info[0] < 3:
+    from Tkinter import PhotoImage
+else:
+    from tkinter import PhotoImage
 
 def main():
     try:
