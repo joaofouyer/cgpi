@@ -28,6 +28,8 @@ class Clipping:
             self.width = self.max_x - self.min_x
             self.height = self.max_y - self.min_y
             self.top_margin = min_y
+            print(self.min_x, self.max_x)
+            print(self.min_y, self.max_y)
             self.left_margin = min_x
             self.background = background
             top_level = Toplevel(

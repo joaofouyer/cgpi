@@ -21,12 +21,8 @@ class PointGraph (Point, object):
             if self.window.clipping:
                 if self.window.clipping.min_x < self.x < self.window.clipping.max_x and \
                         self.window.clipping.min_y < self.y < self.window.clipping.max_y:
-                    x = self.x - self.window.clipping.top_margin
-                    y = self.y - self.window.clipping.left_margin
-                    print(y, self.y)
-                    x = round(x / self.window.canvas_width * self.window.clipping.width)
-                    y = round(y / self.window.height * self.window.clipping.height)
-
+                    x = self.x - self.window.clipping.left_margin
+                    y = self.y - self.window.clipping.top_margin
                     self.window.clipping.canvas.create_oval(
                         x - self.size,
                         y - self.size,
