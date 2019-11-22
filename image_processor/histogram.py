@@ -1,10 +1,6 @@
 from tkinter import TOP, X
-import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg)
-from matplotlib.backend_bases import NavigationToolbar2
 from matplotlib.figure import Figure
-import numpy as np
-
 
 
 class Histogram:
@@ -16,7 +12,8 @@ class Histogram:
             print("Histogram: ", type(e), e)
             raise e
 
-    def plot(self, l, root):
+    @staticmethod
+    def plot(l, root):
         fig = Figure(figsize=(5, 4), dpi=50)
         fig.add_subplot(111).plot(l)
 

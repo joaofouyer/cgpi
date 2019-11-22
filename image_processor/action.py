@@ -10,8 +10,9 @@ class Action:
         try:
             self.actions_stack.append(image)
             self.undo_stack = []
+
         except Exception as e:
-            print("Excetpion on push: ", e)
+            print("Exception on push: ", e)
 
     def pop(self):
         try:
@@ -52,7 +53,7 @@ class Action:
             return True
 
     def last(self):
-        return self.actions_stack[-1]
+        return self.actions_stack[-1] if len(self.actions_stack) else None
 
     def first(self):
-        return self.actions_stack[0]
+        return self.actions_stack[0] if len(self.actions_stack) else None

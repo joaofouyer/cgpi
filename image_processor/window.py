@@ -200,7 +200,8 @@ class Window:
     def histogram(self):
         try:
             img = self.actions.last()
-            histogram = Histogram(photo=img, root=self.sidebar)
+            if img:
+                histogram = Histogram(photo=img, root=self.sidebar)
 
         except Exception as e:
             print("Exception on histogram: {} {}".format(type(e), e))
