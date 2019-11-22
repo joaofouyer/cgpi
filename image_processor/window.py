@@ -65,7 +65,7 @@ class Window:
             var.set("Filtros")
 
             self.load_image_btn = Button(self.menu, BTN_CONFIG,  text="Carregar", command=self.load_file)
-            self.save_image_btn = Button(self.menu, BTN_CONFIG,  text="Salvar", command=None)
+            self.save_image_btn = Button(self.menu, BTN_CONFIG,  text="Salvar", command=self.save)
             self.undo_btn = Button(self.menu, BTN_CONFIG,  text="Desfazer", command=self.undo)
             self.redo_btn = Button(self.menu, BTN_CONFIG,  text="Refazer", command=self.redo)
             self.histogram_btn = Button(self.menu, BTN_CONFIG,  text="Histograma", command=self.histogram)
@@ -204,4 +204,24 @@ class Window:
 
         except Exception as e:
             print("Exception on histogram: {} {}".format(type(e), e))
+            raise e
+
+    def save(self):
+        try:
+            photo = self.actions.last()
+            filename = photo.filename
+            extension = filename.split('.')[1]
+
+            name = filedialog.asksaveasfilename(
+                initialdir=BASE_DIR,
+                title="Selecione a pasta e o nome da foto que deseja salvar.",
+                filetypes=(("arquivos {}".format(extension), "*.{}".format(extension)),
+                           ("todos os arquivos","*.*")))
+            if name:
+                n, ex = name.split('.')
+                if not ex or ex != extension:
+                    name = '{}.{}'.format(n, extension)
+                photo.image.save(name)
+        except Exception as e:
+            print("Exception on save: {} {}".format(type(e), e))
             raise e
