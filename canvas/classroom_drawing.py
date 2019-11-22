@@ -1,9 +1,9 @@
 # coding: utf-8
 
-from gui.window import Window
-from primitives.point_graph import PointGraph
-from primitives.line_graph import LineGraph
-from primitives.circle_graph import CircleGraph
+from .gui.window import Window
+from .primitives.point_graph import PointGraph
+from .primitives.line_graph import LineGraph
+from .primitives.circle_graph import CircleGraph
 
 
 def draw():

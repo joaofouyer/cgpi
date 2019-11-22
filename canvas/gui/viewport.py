@@ -3,10 +3,9 @@ import sys
 # Importante para garantir que funcione em python2 e em python3.
 
 if sys.version_info[0] < 3:
-    from Tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED, ENABLED
+    from Tkinter import Canvas
 else:
-    from tkinter import Tk, Canvas, mainloop, Button, Frame, LEFT, RIGHT, SUNKEN, DISABLED
-    from tkinter import ACTIVE as ENABLED
+    from tkinter import Canvas
 
 
 class Viewport:

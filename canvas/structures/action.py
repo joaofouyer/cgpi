@@ -1,6 +1,6 @@
 # coding: utf-8
 
-from primitives.polygon_graph import PolygonGraph
+from ..primitives.polygon_graph import PolygonGraph
 
 
 class Action:

@@ -1,19 +1,19 @@
 # coding: utf-8
 import sys
 import os
-from gui.button import SidebarButton
-from gui.clipping import Clipping
-from gui.icon import Icon
-from gui.sidebar import Sidebar
-from structures.action import Action
-from primitives.point_graph import PointGraph
-from primitives.circle_graph import CircleGraph
-from primitives.line_graph import LineGraph
-from primitives.rectangle_graph import RectangleGraph
-from primitives.polygon_graph import PolygonGraph
-from gui.viewport import Viewport
-from structures.import_file import import_json
-from structures.export_file import export_json
+from .button import SidebarButton
+from .clipping import Clipping
+from .icon import Icon
+from .sidebar import Sidebar
+from .viewport import Viewport
+from ..structures.action import Action
+from ..structures.import_file import import_json
+from ..structures.export_file import export_json
+from ..primitives.point_graph import PointGraph
+from ..primitives.circle_graph import CircleGraph
+from ..primitives.line_graph import LineGraph
+from ..primitives.rectangle_graph import RectangleGraph
+from ..primitives.polygon_graph import PolygonGraph
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

@@ -1,6 +1,6 @@
-from primitives.line_graph import LineGraph
-from primitives.point_graph import PointGraph
-from gui.window import Window
+from .primitives.line_graph import LineGraph
+from .primitives.point_graph import PointGraph
+from .gui.window import Window
 
 """
 Doesn't work yet. For Dragon Curve fully working please refer to dragon_curve_test that was implemented with turtle.

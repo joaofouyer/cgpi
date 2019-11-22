@@ -1,6 +1,5 @@
 # coding: utf-8
 from math import cos, sin
-from primitives.point import Point
 
 
 class Circle:

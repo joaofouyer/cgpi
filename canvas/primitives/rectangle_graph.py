@@ -1,9 +1,8 @@
 # coding: utf-8
 import sys
-from primitives.point_graph import PointGraph
-from primitives.point import Point
-from primitives.line_graph import LineGraph
-from gui.animation import Animation
+from .point_graph import PointGraph
+from .point import Point
+from .line_graph import LineGraph
 
 
 class RectangleGraph (LineGraph, object):

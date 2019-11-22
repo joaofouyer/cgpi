@@ -1,6 +1,6 @@
 # coding: utf-8
 import sys
-from primitives.line_graph import LineGraph
+from .line_graph import LineGraph
 
 
 class PolygonGraph:

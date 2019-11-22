@@ -1,6 +1,6 @@
 # coding: utf-8
-from primitives.circle import Circle
-from primitives.point_graph import PointGraph
+from .circle import Circle
+from .point_graph import PointGraph
 import sys
 
 

@@ -1,9 +1,8 @@
 import json
-from primitives.point_graph import PointGraph
-from primitives.line_graph import LineGraph
-from primitives.rectangle_graph import RectangleGraph
-from primitives.polygon_graph import PolygonGraph
-from primitives.circle_graph import CircleGraph
+from ..primitives.line_graph import LineGraph
+from ..primitives.rectangle_graph import RectangleGraph
+from ..primitives.polygon_graph import PolygonGraph
+from ..primitives.circle_graph import CircleGraph
 
 
 def hex_to_rgb(color):

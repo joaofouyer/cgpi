@@ -1,6 +1,6 @@
 # coding: utf-8
 import sys
-from primitives.point import Point
+from .point import Point
 
 
 class PointGraph (Point, object):
